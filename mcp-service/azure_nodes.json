@@ -1,0 +1,1265 @@
+{
+  "analytics": [
+    {
+      "class": "_Analytics",
+      "canonical": "_Analytics",
+      "aliases": []
+    },
+    {
+      "class": "AnalysisServices",
+      "canonical": "AnalysisServices",
+      "aliases": []
+    },
+    {
+      "class": "Databricks",
+      "canonical": "Databricks",
+      "aliases": []
+    },
+    {
+      "class": "DataExplorerClusters",
+      "canonical": "DataExplorerClusters",
+      "aliases": []
+    },
+    {
+      "class": "DataFactories",
+      "canonical": "DataFactories",
+      "aliases": []
+    },
+    {
+      "class": "DataLakeAnalytics",
+      "canonical": "DataLakeAnalytics",
+      "aliases": []
+    },
+    {
+      "class": "DataLakeStoreGen1",
+      "canonical": "DataLakeStoreGen1",
+      "aliases": []
+    },
+    {
+      "class": "EventHubClusters",
+      "canonical": "EventHubClusters",
+      "aliases": []
+    },
+    {
+      "class": "EventHubs",
+      "canonical": "EventHubs",
+      "aliases": []
+    },
+    {
+      "class": "Hdinsightclusters",
+      "canonical": "Hdinsightclusters",
+      "aliases": []
+    },
+    {
+      "class": "LogAnalyticsWorkspaces",
+      "canonical": "LogAnalyticsWorkspaces",
+      "aliases": []
+    },
+    {
+      "class": "StreamAnalyticsJobs",
+      "canonical": "StreamAnalyticsJobs",
+      "aliases": []
+    },
+    {
+      "class": "SynapseAnalytics",
+      "canonical": "SynapseAnalytics",
+      "aliases": []
+    }
+  ],
+  "compute": [
+    {
+      "class": "_Compute",
+      "canonical": "_Compute",
+      "aliases": []
+    },
+    {
+      "class": "AppServices",
+      "canonical": "AppServices",
+      "aliases": []
+    },
+    {
+      "class": "AutomanagedVM",
+      "canonical": "AutomanagedVM",
+      "aliases": []
+    },
+    {
+      "class": "AvailabilitySets",
+      "canonical": "AvailabilitySets",
+      "aliases": []
+    },
+    {
+      "class": "BatchAccounts",
+      "canonical": "BatchAccounts",
+      "aliases": []
+    },
+    {
+      "class": "CitrixVirtualDesktopsEssentials",
+      "canonical": "CitrixVirtualDesktopsEssentials",
+      "aliases": []
+    },
+    {
+      "class": "CloudServices",
+      "canonical": "CloudServices",
+      "aliases": []
+    },
+    {
+      "class": "CloudServicesClassic",
+      "canonical": "CloudServicesClassic",
+      "aliases": []
+    },
+    {
+      "class": "CloudsimpleVirtualMachines",
+      "canonical": "CloudsimpleVirtualMachines",
+      "aliases": []
+    },
+    {
+      "class": "ContainerApps",
+      "canonical": "ContainerApps",
+      "aliases": []
+    },
+    {
+      "class": "ContainerInstances",
+      "canonical": "ContainerInstances",
+      "aliases": []
+    },
+    {
+      "class": "ContainerRegistries",
+      "canonical": "ACR",
+      "aliases": [
+        "ContainerRegistries"
+      ]
+    },
+    {
+      "class": "DiskEncryptionSets",
+      "canonical": "DiskEncryptionSets",
+      "aliases": []
+    },
+    {
+      "class": "Disks",
+      "canonical": "Disks",
+      "aliases": []
+    },
+    {
+      "class": "DiskSnapshots",
+      "canonical": "DiskSnapshots",
+      "aliases": []
+    },
+    {
+      "class": "FunctionApps",
+      "canonical": "FunctionApps",
+      "aliases": []
+    },
+    {
+      "class": "ImageDefinitions",
+      "canonical": "ImageDefinitions",
+      "aliases": []
+    },
+    {
+      "class": "ImageVersions",
+      "canonical": "ImageVersions",
+      "aliases": []
+    },
+    {
+      "class": "KubernetesServices",
+      "canonical": "AKS",
+      "aliases": [
+        "KubernetesServices"
+      ]
+    },
+    {
+      "class": "MeshApplications",
+      "canonical": "MeshApplications",
+      "aliases": []
+    },
+    {
+      "class": "OsImages",
+      "canonical": "OsImages",
+      "aliases": []
+    },
+    {
+      "class": "SAPHANAOnAzure",
+      "canonical": "SAPHANAOnAzure",
+      "aliases": []
+    },
+    {
+      "class": "ServiceFabricClusters",
+      "canonical": "ServiceFabricClusters",
+      "aliases": []
+    },
+    {
+      "class": "SharedImageGalleries",
+      "canonical": "SharedImageGalleries",
+      "aliases": []
+    },
+    {
+      "class": "SpringCloud",
+      "canonical": "SpringCloud",
+      "aliases": []
+    },
+    {
+      "class": "VM",
+      "canonical": "VM",
+      "aliases": []
+    },
+    {
+      "class": "VMClassic",
+      "canonical": "VMClassic",
+      "aliases": []
+    },
+    {
+      "class": "VMImages",
+      "canonical": "VMImages",
+      "aliases": []
+    },
+    {
+      "class": "VMLinux",
+      "canonical": "VMLinux",
+      "aliases": []
+    },
+    {
+      "class": "VMScaleSet",
+      "canonical": "VMSS",
+      "aliases": [
+        "VMScaleSet"
+      ]
+    },
+    {
+      "class": "VMWindows",
+      "canonical": "VMWindows",
+      "aliases": []
+    },
+    {
+      "class": "Workspaces",
+      "canonical": "Workspaces",
+      "aliases": []
+    }
+  ],
+  "database": [
+    {
+      "class": "_Database",
+      "canonical": "_Database",
+      "aliases": []
+    },
+    {
+      "class": "BlobStorage",
+      "canonical": "BlobStorage",
+      "aliases": []
+    },
+    {
+      "class": "CacheForRedis",
+      "canonical": "CacheForRedis",
+      "aliases": []
+    },
+    {
+      "class": "CosmosDb",
+      "canonical": "CosmosDb",
+      "aliases": []
+    },
+    {
+      "class": "DatabaseForMariadbServers",
+      "canonical": "DatabaseForMariadbServers",
+      "aliases": []
+    },
+    {
+      "class": "DatabaseForMysqlServers",
+      "canonical": "DatabaseForMysqlServers",
+      "aliases": []
+    },
+    {
+      "class": "DatabaseForPostgresqlServers",
+      "canonical": "DatabaseForPostgresqlServers",
+      "aliases": []
+    },
+    {
+      "class": "DataExplorerClusters",
+      "canonical": "DataExplorerClusters",
+      "aliases": []
+    },
+    {
+      "class": "DataFactory",
+      "canonical": "DataFactory",
+      "aliases": []
+    },
+    {
+      "class": "DataLake",
+      "canonical": "DataLake",
+      "aliases": []
+    },
+    {
+      "class": "ElasticDatabasePools",
+      "canonical": "ElasticDatabasePools",
+      "aliases": []
+    },
+    {
+      "class": "ElasticJobAgents",
+      "canonical": "ElasticJobAgents",
+      "aliases": []
+    },
+    {
+      "class": "InstancePools",
+      "canonical": "InstancePools",
+      "aliases": []
+    },
+    {
+      "class": "ManagedDatabases",
+      "canonical": "ManagedDatabases",
+      "aliases": []
+    },
+    {
+      "class": "SQL",
+      "canonical": "SQL",
+      "aliases": []
+    },
+    {
+      "class": "SQLDatabases",
+      "canonical": "SQLDatabases",
+      "aliases": []
+    },
+    {
+      "class": "SQLDatawarehouse",
+      "canonical": "SQLDatawarehouse",
+      "aliases": []
+    },
+    {
+      "class": "SQLManagedInstances",
+      "canonical": "SQLManagedInstances",
+      "aliases": []
+    },
+    {
+      "class": "SQLServers",
+      "canonical": "SQLServers",
+      "aliases": []
+    },
+    {
+      "class": "SQLServerStretchDatabases",
+      "canonical": "SQLServerStretchDatabases",
+      "aliases": []
+    },
+    {
+      "class": "SQLVM",
+      "canonical": "SQLVM",
+      "aliases": []
+    },
+    {
+      "class": "SsisLiftAndShiftIr",
+      "canonical": "SsisLiftAndShiftIr",
+      "aliases": []
+    },
+    {
+      "class": "SynapseAnalytics",
+      "canonical": "SynapseAnalytics",
+      "aliases": []
+    },
+    {
+      "class": "VirtualClusters",
+      "canonical": "VirtualClusters",
+      "aliases": []
+    },
+    {
+      "class": "VirtualDatacenter",
+      "canonical": "VirtualDatacenter",
+      "aliases": []
+    }
+  ],
+  "devops": [
+    {
+      "class": "_Devops",
+      "canonical": "_Devops",
+      "aliases": []
+    },
+    {
+      "class": "ApplicationInsights",
+      "canonical": "ApplicationInsights",
+      "aliases": []
+    },
+    {
+      "class": "Artifacts",
+      "canonical": "Artifacts",
+      "aliases": []
+    },
+    {
+      "class": "Boards",
+      "canonical": "Boards",
+      "aliases": []
+    },
+    {
+      "class": "Devops",
+      "canonical": "Devops",
+      "aliases": []
+    },
+    {
+      "class": "DevtestLabs",
+      "canonical": "DevtestLabs",
+      "aliases": []
+    },
+    {
+      "class": "LabServices",
+      "canonical": "LabServices",
+      "aliases": []
+    },
+    {
+      "class": "Pipelines",
+      "canonical": "Pipelines",
+      "aliases": []
+    },
+    {
+      "class": "Repos",
+      "canonical": "Repos",
+      "aliases": []
+    },
+    {
+      "class": "TestPlans",
+      "canonical": "TestPlans",
+      "aliases": []
+    }
+  ],
+  "general": [
+    {
+      "class": "_General",
+      "canonical": "_General",
+      "aliases": []
+    },
+    {
+      "class": "Allresources",
+      "canonical": "Allresources",
+      "aliases": []
+    },
+    {
+      "class": "Azurehome",
+      "canonical": "Azurehome",
+      "aliases": []
+    },
+    {
+      "class": "Developertools",
+      "canonical": "Developertools",
+      "aliases": []
+    },
+    {
+      "class": "Helpsupport",
+      "canonical": "Helpsupport",
+      "aliases": []
+    },
+    {
+      "class": "Information",
+      "canonical": "Information",
+      "aliases": []
+    },
+    {
+      "class": "Managementgroups",
+      "canonical": "Managementgroups",
+      "aliases": []
+    },
+    {
+      "class": "Marketplace",
+      "canonical": "Marketplace",
+      "aliases": []
+    },
+    {
+      "class": "Quickstartcenter",
+      "canonical": "Quickstartcenter",
+      "aliases": []
+    },
+    {
+      "class": "Recent",
+      "canonical": "Recent",
+      "aliases": []
+    },
+    {
+      "class": "Reservations",
+      "canonical": "Reservations",
+      "aliases": []
+    },
+    {
+      "class": "Resource",
+      "canonical": "Resource",
+      "aliases": []
+    },
+    {
+      "class": "Resourcegroups",
+      "canonical": "Resourcegroups",
+      "aliases": []
+    },
+    {
+      "class": "Servicehealth",
+      "canonical": "Servicehealth",
+      "aliases": []
+    },
+    {
+      "class": "Shareddashboard",
+      "canonical": "Shareddashboard",
+      "aliases": []
+    },
+    {
+      "class": "Subscriptions",
+      "canonical": "Subscriptions",
+      "aliases": []
+    },
+    {
+      "class": "Support",
+      "canonical": "Support",
+      "aliases": []
+    },
+    {
+      "class": "Supportrequests",
+      "canonical": "Supportrequests",
+      "aliases": []
+    },
+    {
+      "class": "Tag",
+      "canonical": "Tag",
+      "aliases": []
+    },
+    {
+      "class": "Tags",
+      "canonical": "Tags",
+      "aliases": []
+    },
+    {
+      "class": "Templates",
+      "canonical": "Templates",
+      "aliases": []
+    },
+    {
+      "class": "Twousericon",
+      "canonical": "Twousericon",
+      "aliases": []
+    },
+    {
+      "class": "Userhealthicon",
+      "canonical": "Userhealthicon",
+      "aliases": []
+    },
+    {
+      "class": "Usericon",
+      "canonical": "Usericon",
+      "aliases": []
+    },
+    {
+      "class": "Userprivacy",
+      "canonical": "Userprivacy",
+      "aliases": []
+    },
+    {
+      "class": "Userresource",
+      "canonical": "Userresource",
+      "aliases": []
+    },
+    {
+      "class": "Whatsnew",
+      "canonical": "Whatsnew",
+      "aliases": []
+    }
+  ],
+  "identity": [
+    {
+      "class": "_Identity",
+      "canonical": "_Identity",
+      "aliases": []
+    },
+    {
+      "class": "AccessReview",
+      "canonical": "AccessReview",
+      "aliases": []
+    },
+    {
+      "class": "ActiveDirectory",
+      "canonical": "ActiveDirectory",
+      "aliases": []
+    },
+    {
+      "class": "ActiveDirectoryConnectHealth",
+      "canonical": "ActiveDirectoryConnectHealth",
+      "aliases": []
+    },
+    {
+      "class": "ADB2C",
+      "canonical": "ADB2C",
+      "aliases": []
+    },
+    {
+      "class": "ADDomainServices",
+      "canonical": "ADDomainServices",
+      "aliases": []
+    },
+    {
+      "class": "ADIdentityProtection",
+      "canonical": "ADIdentityProtection",
+      "aliases": []
+    },
+    {
+      "class": "ADPrivilegedIdentityManagement",
+      "canonical": "ADPrivilegedIdentityManagement",
+      "aliases": []
+    },
+    {
+      "class": "AppRegistrations",
+      "canonical": "AppRegistrations",
+      "aliases": []
+    },
+    {
+      "class": "ConditionalAccess",
+      "canonical": "ConditionalAccess",
+      "aliases": []
+    },
+    {
+      "class": "EnterpriseApplications",
+      "canonical": "EnterpriseApplications",
+      "aliases": []
+    },
+    {
+      "class": "Groups",
+      "canonical": "Groups",
+      "aliases": []
+    },
+    {
+      "class": "IdentityGovernance",
+      "canonical": "IdentityGovernance",
+      "aliases": []
+    },
+    {
+      "class": "InformationProtection",
+      "canonical": "InformationProtection",
+      "aliases": []
+    },
+    {
+      "class": "ManagedIdentities",
+      "canonical": "ManagedIdentities",
+      "aliases": []
+    },
+    {
+      "class": "Users",
+      "canonical": "Users",
+      "aliases": []
+    }
+  ],
+  "integration": [
+    {
+      "class": "_Integration",
+      "canonical": "_Integration",
+      "aliases": []
+    },
+    {
+      "class": "APIForFhir",
+      "canonical": "APIForFhir",
+      "aliases": []
+    },
+    {
+      "class": "APIManagement",
+      "canonical": "APIManagement",
+      "aliases": []
+    },
+    {
+      "class": "AppConfiguration",
+      "canonical": "AppConfiguration",
+      "aliases": []
+    },
+    {
+      "class": "DataCatalog",
+      "canonical": "DataCatalog",
+      "aliases": []
+    },
+    {
+      "class": "EventGridDomains",
+      "canonical": "EventGridDomains",
+      "aliases": []
+    },
+    {
+      "class": "EventGridSubscriptions",
+      "canonical": "EventGridSubscriptions",
+      "aliases": []
+    },
+    {
+      "class": "EventGridTopics",
+      "canonical": "EventGridTopics",
+      "aliases": []
+    },
+    {
+      "class": "IntegrationAccounts",
+      "canonical": "IntegrationAccounts",
+      "aliases": []
+    },
+    {
+      "class": "IntegrationServiceEnvironments",
+      "canonical": "IntegrationServiceEnvironments",
+      "aliases": []
+    },
+    {
+      "class": "LogicApps",
+      "canonical": "LogicApps",
+      "aliases": []
+    },
+    {
+      "class": "LogicAppsCustomConnector",
+      "canonical": "LogicAppsCustomConnector",
+      "aliases": []
+    },
+    {
+      "class": "PartnerTopic",
+      "canonical": "PartnerTopic",
+      "aliases": []
+    },
+    {
+      "class": "SendgridAccounts",
+      "canonical": "SendgridAccounts",
+      "aliases": []
+    },
+    {
+      "class": "ServiceBus",
+      "canonical": "ServiceBus",
+      "aliases": []
+    },
+    {
+      "class": "ServiceBusRelays",
+      "canonical": "ServiceBusRelays",
+      "aliases": []
+    },
+    {
+      "class": "ServiceCatalogManagedApplicationDefinitions",
+      "canonical": "ServiceCatalogManagedApplicationDefinitions",
+      "aliases": []
+    },
+    {
+      "class": "SoftwareAsAService",
+      "canonical": "SoftwareAsAService",
+      "aliases": []
+    },
+    {
+      "class": "StorsimpleDeviceManagers",
+      "canonical": "StorsimpleDeviceManagers",
+      "aliases": []
+    },
+    {
+      "class": "SystemTopic",
+      "canonical": "SystemTopic",
+      "aliases": []
+    }
+  ],
+  "iot": [
+    {
+      "class": "_Iot",
+      "canonical": "_Iot",
+      "aliases": []
+    },
+    {
+      "class": "DeviceProvisioningServices",
+      "canonical": "DeviceProvisioningServices",
+      "aliases": []
+    },
+    {
+      "class": "DigitalTwins",
+      "canonical": "DigitalTwins",
+      "aliases": []
+    },
+    {
+      "class": "IotCentralApplications",
+      "canonical": "IotCentralApplications",
+      "aliases": []
+    },
+    {
+      "class": "IotHub",
+      "canonical": "IotHub",
+      "aliases": []
+    },
+    {
+      "class": "IotHubSecurity",
+      "canonical": "IotHubSecurity",
+      "aliases": []
+    },
+    {
+      "class": "Maps",
+      "canonical": "Maps",
+      "aliases": []
+    },
+    {
+      "class": "Sphere",
+      "canonical": "Sphere",
+      "aliases": []
+    },
+    {
+      "class": "TimeSeriesInsightsEnvironments",
+      "canonical": "TimeSeriesInsightsEnvironments",
+      "aliases": []
+    },
+    {
+      "class": "TimeSeriesInsightsEventsSources",
+      "canonical": "TimeSeriesInsightsEventsSources",
+      "aliases": []
+    },
+    {
+      "class": "Windows10IotCoreServices",
+      "canonical": "Windows10IotCoreServices",
+      "aliases": []
+    }
+  ],
+  "migration": [
+    {
+      "class": "_Migration",
+      "canonical": "_Migration",
+      "aliases": []
+    },
+    {
+      "class": "DatabaseMigrationServices",
+      "canonical": "DatabaseMigrationServices",
+      "aliases": []
+    },
+    {
+      "class": "DataBox",
+      "canonical": "DataBox",
+      "aliases": []
+    },
+    {
+      "class": "DataBoxEdge",
+      "canonical": "DataBoxEdge",
+      "aliases": []
+    },
+    {
+      "class": "MigrationProjects",
+      "canonical": "MigrationProjects",
+      "aliases": []
+    },
+    {
+      "class": "RecoveryServicesVaults",
+      "canonical": "RecoveryServicesVaults",
+      "aliases": []
+    }
+  ],
+  "ml": [
+    {
+      "class": "_Ml",
+      "canonical": "_Ml",
+      "aliases": []
+    },
+    {
+      "class": "AzureOpenAI",
+      "canonical": "AzureOpenAI",
+      "aliases": []
+    },
+    {
+      "class": "AzureSpeedToText",
+      "canonical": "AzureSpeedToText",
+      "aliases": []
+    },
+    {
+      "class": "BatchAI",
+      "canonical": "BatchAI",
+      "aliases": []
+    },
+    {
+      "class": "BotServices",
+      "canonical": "BotServices",
+      "aliases": []
+    },
+    {
+      "class": "CognitiveServices",
+      "canonical": "CognitiveServices",
+      "aliases": []
+    },
+    {
+      "class": "GenomicsAccounts",
+      "canonical": "GenomicsAccounts",
+      "aliases": []
+    },
+    {
+      "class": "MachineLearningServiceWorkspaces",
+      "canonical": "MachineLearningServiceWorkspaces",
+      "aliases": []
+    },
+    {
+      "class": "MachineLearningStudioWebServicePlans",
+      "canonical": "MachineLearningStudioWebServicePlans",
+      "aliases": []
+    },
+    {
+      "class": "MachineLearningStudioWebServices",
+      "canonical": "MachineLearningStudioWebServices",
+      "aliases": []
+    },
+    {
+      "class": "MachineLearningStudioWorkspaces",
+      "canonical": "MachineLearningStudioWorkspaces",
+      "aliases": []
+    }
+  ],
+  "mobile": [
+    {
+      "class": "_Mobile",
+      "canonical": "_Mobile",
+      "aliases": []
+    },
+    {
+      "class": "AppServiceMobile",
+      "canonical": "AppServiceMobile",
+      "aliases": []
+    },
+    {
+      "class": "MobileEngagement",
+      "canonical": "MobileEngagement",
+      "aliases": []
+    },
+    {
+      "class": "NotificationHubs",
+      "canonical": "NotificationHubs",
+      "aliases": []
+    }
+  ],
+  "monitor": [
+    {
+      "class": "_Monitor",
+      "canonical": "_Monitor",
+      "aliases": []
+    },
+    {
+      "class": "ChangeAnalysis",
+      "canonical": "ChangeAnalysis",
+      "aliases": []
+    },
+    {
+      "class": "Logs",
+      "canonical": "Logs",
+      "aliases": []
+    },
+    {
+      "class": "Metrics",
+      "canonical": "Metrics",
+      "aliases": []
+    },
+    {
+      "class": "Monitor",
+      "canonical": "Monitor",
+      "aliases": []
+    }
+  ],
+  "network": [
+    {
+      "class": "_Network",
+      "canonical": "_Network",
+      "aliases": []
+    },
+    {
+      "class": "ApplicationGateway",
+      "canonical": "ApplicationGateway",
+      "aliases": []
+    },
+    {
+      "class": "ApplicationSecurityGroups",
+      "canonical": "ApplicationSecurityGroups",
+      "aliases": []
+    },
+    {
+      "class": "CDNProfiles",
+      "canonical": "CDNProfiles",
+      "aliases": []
+    },
+    {
+      "class": "Connections",
+      "canonical": "Connections",
+      "aliases": []
+    },
+    {
+      "class": "DDOSProtectionPlans",
+      "canonical": "DDOSProtectionPlans",
+      "aliases": []
+    },
+    {
+      "class": "DNSPrivateZones",
+      "canonical": "DNSPrivateZones",
+      "aliases": []
+    },
+    {
+      "class": "DNSZones",
+      "canonical": "DNSZones",
+      "aliases": []
+    },
+    {
+      "class": "ExpressrouteCircuits",
+      "canonical": "ExpressrouteCircuits",
+      "aliases": []
+    },
+    {
+      "class": "Firewall",
+      "canonical": "Firewall",
+      "aliases": []
+    },
+    {
+      "class": "FrontDoors",
+      "canonical": "FrontDoors",
+      "aliases": []
+    },
+    {
+      "class": "LoadBalancers",
+      "canonical": "LoadBalancers",
+      "aliases": []
+    },
+    {
+      "class": "LocalNetworkGateways",
+      "canonical": "LocalNetworkGateways",
+      "aliases": []
+    },
+    {
+      "class": "NetworkInterfaces",
+      "canonical": "NetworkInterfaces",
+      "aliases": []
+    },
+    {
+      "class": "NetworkSecurityGroupsClassic",
+      "canonical": "NetworkSecurityGroupsClassic",
+      "aliases": []
+    },
+    {
+      "class": "NetworkWatcher",
+      "canonical": "NetworkWatcher",
+      "aliases": []
+    },
+    {
+      "class": "OnPremisesDataGateways",
+      "canonical": "OnPremisesDataGateways",
+      "aliases": []
+    },
+    {
+      "class": "PrivateEndpoint",
+      "canonical": "PrivateEndpoint",
+      "aliases": []
+    },
+    {
+      "class": "PublicIpAddresses",
+      "canonical": "PublicIpAddresses",
+      "aliases": []
+    },
+    {
+      "class": "ReservedIpAddressesClassic",
+      "canonical": "ReservedIpAddressesClassic",
+      "aliases": []
+    },
+    {
+      "class": "RouteFilters",
+      "canonical": "RouteFilters",
+      "aliases": []
+    },
+    {
+      "class": "RouteTables",
+      "canonical": "RouteTables",
+      "aliases": []
+    },
+    {
+      "class": "ServiceEndpointPolicies",
+      "canonical": "ServiceEndpointPolicies",
+      "aliases": []
+    },
+    {
+      "class": "Subnets",
+      "canonical": "Subnets",
+      "aliases": []
+    },
+    {
+      "class": "TrafficManagerProfiles",
+      "canonical": "TrafficManagerProfiles",
+      "aliases": []
+    },
+    {
+      "class": "VirtualNetworkClassic",
+      "canonical": "VirtualNetworkClassic",
+      "aliases": []
+    },
+    {
+      "class": "VirtualNetworkGateways",
+      "canonical": "VirtualNetworkGateways",
+      "aliases": []
+    },
+    {
+      "class": "VirtualNetworks",
+      "canonical": "VirtualNetworks",
+      "aliases": []
+    },
+    {
+      "class": "VirtualWans",
+      "canonical": "VirtualWans",
+      "aliases": []
+    }
+  ],
+  "security": [
+    {
+      "class": "_Security",
+      "canonical": "_Security",
+      "aliases": []
+    },
+    {
+      "class": "ApplicationSecurityGroups",
+      "canonical": "ApplicationSecurityGroups",
+      "aliases": []
+    },
+    {
+      "class": "ConditionalAccess",
+      "canonical": "ConditionalAccess",
+      "aliases": []
+    },
+    {
+      "class": "Defender",
+      "canonical": "Defender",
+      "aliases": []
+    },
+    {
+      "class": "ExtendedSecurityUpdates",
+      "canonical": "ExtendedSecurityUpdates",
+      "aliases": []
+    },
+    {
+      "class": "KeyVaults",
+      "canonical": "KeyVaults",
+      "aliases": []
+    },
+    {
+      "class": "SecurityCenter",
+      "canonical": "SecurityCenter",
+      "aliases": []
+    },
+    {
+      "class": "Sentinel",
+      "canonical": "Sentinel",
+      "aliases": []
+    }
+  ],
+  "storage": [
+    {
+      "class": "_Storage",
+      "canonical": "_Storage",
+      "aliases": []
+    },
+    {
+      "class": "ArchiveStorage",
+      "canonical": "ArchiveStorage",
+      "aliases": []
+    },
+    {
+      "class": "Azurefxtedgefiler",
+      "canonical": "Azurefxtedgefiler",
+      "aliases": []
+    },
+    {
+      "class": "BlobStorage",
+      "canonical": "BlobStorage",
+      "aliases": []
+    },
+    {
+      "class": "DataBox",
+      "canonical": "DataBox",
+      "aliases": []
+    },
+    {
+      "class": "DataBoxEdgeDataBoxGateway",
+      "canonical": "DataBoxEdgeDataBoxGateway",
+      "aliases": []
+    },
+    {
+      "class": "DataLakeStorage",
+      "canonical": "DataLakeStorage",
+      "aliases": []
+    },
+    {
+      "class": "GeneralStorage",
+      "canonical": "GeneralStorage",
+      "aliases": []
+    },
+    {
+      "class": "NetappFiles",
+      "canonical": "NetappFiles",
+      "aliases": []
+    },
+    {
+      "class": "QueuesStorage",
+      "canonical": "QueuesStorage",
+      "aliases": []
+    },
+    {
+      "class": "StorageAccounts",
+      "canonical": "StorageAccounts",
+      "aliases": []
+    },
+    {
+      "class": "StorageAccountsClassic",
+      "canonical": "StorageAccountsClassic",
+      "aliases": []
+    },
+    {
+      "class": "StorageExplorer",
+      "canonical": "StorageExplorer",
+      "aliases": []
+    },
+    {
+      "class": "StorageSyncServices",
+      "canonical": "StorageSyncServices",
+      "aliases": []
+    },
+    {
+      "class": "StorsimpleDataManagers",
+      "canonical": "StorsimpleDataManagers",
+      "aliases": []
+    },
+    {
+      "class": "StorsimpleDeviceManagers",
+      "canonical": "StorsimpleDeviceManagers",
+      "aliases": []
+    },
+    {
+      "class": "TableStorage",
+      "canonical": "TableStorage",
+      "aliases": []
+    }
+  ],
+  "web": [
+    {
+      "class": "_Web",
+      "canonical": "_Web",
+      "aliases": []
+    },
+    {
+      "class": "APIConnections",
+      "canonical": "APIConnections",
+      "aliases": []
+    },
+    {
+      "class": "AppServiceCertificates",
+      "canonical": "AppServiceCertificates",
+      "aliases": []
+    },
+    {
+      "class": "AppServiceDomains",
+      "canonical": "AppServiceDomains",
+      "aliases": []
+    },
+    {
+      "class": "AppServiceEnvironments",
+      "canonical": "AppServiceEnvironments",
+      "aliases": []
+    },
+    {
+      "class": "AppServicePlans",
+      "canonical": "AppServicePlans",
+      "aliases": []
+    },
+    {
+      "class": "AppServices",
+      "canonical": "AppServices",
+      "aliases": []
+    },
+    {
+      "class": "MediaServices",
+      "canonical": "MediaServices",
+      "aliases": []
+    },
+    {
+      "class": "NotificationHubNamespaces",
+      "canonical": "NotificationHubNamespaces",
+      "aliases": []
+    },
+    {
+      "class": "Search",
+      "canonical": "Search",
+      "aliases": []
+    },
+    {
+      "class": "Signalr",
+      "canonical": "Signalr",
+      "aliases": []
+    }
+  ]
+}

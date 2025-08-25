@@ -1,0 +1,104 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
+
+name: azure-ai-architect
+metadata:
+  template: azure-ai-architect@1.0.0
+  description: AI-powered Azure Architecture Generator that automatically creates AI agents for design documents and diagram generation
+
+infra:
+  provider: terraform
+
+services:
+  frontend:
+    project: ./frontend/architect-ai
+    host: containerapp
+    language: js
+    docker:
+      path: Dockerfile
+  backend:
+    project: ./backend
+    host: containerapp
+    language: python
+    docker:
+      path: Dockerfile
+  mcp-service:
+    project: ./mcp-service
+    host: containerapp
+    language: python
+    docker:
+      path: Dockerfile
+
+hooks:
+  preprovision:
+    posix:
+      run: |
+        # Ensure environment is configured
+        echo "Preparing Azure AI Architect deployment..."
+        echo "⚠️  Important: You need an existing Azure AI Foundry PROJECT (not individual agents)."
+        echo "📚 Create your project at: https://ai.azure.com/"
+        echo ""
+        echo "🤖 Agents will be created AUTOMATICALLY by the application - no manual setup required!"
+        echo ""
+        
+        # Validate required environment variables
+        if [ -z "$PROJECT_ENDPOINT" ]; then
+          echo "⚠️  Warning: PROJECT_ENDPOINT not set. Update .env after deployment."
+        fi
+        
+        echo "✅ Pre-provision checks complete"
+    windows:
+      run: |
+        # Ensure environment is configured
+        Write-Host "Preparing Azure AI Architect deployment..." -ForegroundColor Cyan
+        Write-Host "⚠️  Important: You need an existing Azure AI Foundry PROJECT (not individual agents)." -ForegroundColor Yellow
+        Write-Host "📚 Create your project at: https://ai.azure.com/" -ForegroundColor White
+        Write-Host ""
+        Write-Host "🤖 Agents will be created AUTOMATICALLY by the application - no manual setup required!" -ForegroundColor Green
+        Write-Host ""
+        
+        # Validate required environment variables
+        if (-not $env:PROJECT_ENDPOINT) {
+          Write-Host "⚠️  Warning: PROJECT_ENDPOINT not set. Update .env after deployment." -ForegroundColor Yellow
+        }
+        
+        Write-Host "✅ Pre-provision checks complete" -ForegroundColor Green
+      shell: pwsh
+
+  postprovision:
+    posix:
+      run: |
+        echo "🎉 Azure AI Architect deployed successfully!"
+        echo ""
+        echo "📋 Next steps:"
+        echo "1. Update .env with your Azure AI Foundry project details:"
+        echo "   - PROJECT_ENDPOINT: Your Azure AI Foundry project endpoint"
+        echo "   - AGENT_NAME: (Optional) Custom agent name (default: architectai-design-agent)"
+        echo "   - MODEL_NAME: (Optional) Model to use (default: gpt-4o)"
+        echo ""
+        echo "🤖 The application will automatically create these agents for you:"
+        echo "   ✅ Architecture Design Agent - Generates detailed Azure architecture documents"
+        echo "   ✅ Diagram Generation Agent - Creates visual architecture diagrams"
+        echo "   ✅ Validation Agent - Validates and improves diagram quality"
+        echo ""
+        echo "3. Access your application at the frontend URL shown above"
+        echo ""
+        echo "📚 Documentation: https://github.com/your-org/azure-ai-architect"
+    windows:
+      run: |
+        Write-Host "🎉 Azure AI Architect deployed successfully!" -ForegroundColor Green
+        Write-Host ""
+        Write-Host "📋 Next steps:" -ForegroundColor Cyan
+        Write-Host "1. Update .env with your Azure AI Foundry project details:" -ForegroundColor White
+        Write-Host "   - PROJECT_ENDPOINT: Your Azure AI Foundry project endpoint" -ForegroundColor Gray
+        Write-Host "   - AGENT_NAME: (Optional) Custom agent name (default: architectai-design-agent)" -ForegroundColor Gray
+        Write-Host "   - MODEL_NAME: (Optional) Model to use (default: gpt-4o)" -ForegroundColor Gray
+        Write-Host ""
+        Write-Host "🤖 The application will automatically create these agents for you:" -ForegroundColor Green
+        Write-Host "   ✅ Architecture Design Agent - Generates detailed Azure architecture documents" -ForegroundColor Gray
+        Write-Host "   ✅ Diagram Generation Agent - Creates visual architecture diagrams" -ForegroundColor Gray
+        Write-Host "   ✅ Validation Agent - Validates and improves diagram quality" -ForegroundColor Gray
+        Write-Host ""
+        Write-Host "3. Access your application at the frontend URL shown above" -ForegroundColor White
+        Write-Host ""
+        Write-Host "📚 Documentation: https://github.com/your-org/azure-ai-architect" -ForegroundColor Cyan
+      shell: pwsh

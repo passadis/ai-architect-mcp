@@ -1,0 +1,35 @@
+# Azure Services
+azure-identity
+azure-keyvault-secrets
+azure-ai-projects
+azure-ai-agents
+azure-storage-blob
+azure-cosmos
+
+# AI + Azure
+openai
+azure-ai-ml
+azure-core
+
+# MCP Server Framework
+mcp
+
+# Diagram generation
+graphviz
+diagrams
+
+# Optional, if using GraphViz locally
+# pygraphviz
+
+# For image handling / encoding (optional)
+pillow
+
+# Web Framework & API
+fastapi
+uvicorn
+python-multipart
+pydantic
+httpx
+
+# Utilities
+python-dotenv

@@ -1,0 +1,41 @@
+# Development files
+.env
+.env.local
+.env.development
+.env.test
+# Allow .env.production for container builds
+# .env.production
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing
+coverage/
+.nyc_output
+
+# Production builds (built in container)
+dist/
+build/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+README.md
+*.md
+
+# Other
+logs/
+*.log

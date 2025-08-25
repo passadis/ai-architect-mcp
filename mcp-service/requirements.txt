@@ -1,0 +1,26 @@
+# MCP Service Dependencies
+fastapi
+uvicorn[standard]
+pydantic
+python-multipart
+
+# MCP Protocol
+mcp
+
+# Diagram Generation
+diagrams
+graphviz
+Pillow
+
+# Azure Components
+azure-identity
+azure-storage-blob
+azure-cosmos
+
+# Data Processing
+pandas
+numpy
+
+# Environment & Utilities
+python-dotenv
+requests
