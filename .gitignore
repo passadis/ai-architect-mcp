@@ -12,7 +12,7 @@ env/
 dist/
 build/
 *.log
-
+**/.env
 # Docker
 *.tar
 *.img
