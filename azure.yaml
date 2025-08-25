@@ -1,8 +1,8 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
 
-name: azure-ai-architect
+name: ai-architect-mcp
 metadata:
-  template: azure-ai-architect@1.0.0
+  template: ai-architect-mcp@1.0.0
   description: AI-powered Azure Architecture Generator that automatically creates AI agents for design documents and diagram generation
 
 infra:
