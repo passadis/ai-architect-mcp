@@ -9,6 +9,10 @@ terraform {
       source  = "aztfmod/azurecaf"
       version = "~>1.2"
     }
+    azapi = {
+      source  = "azure/azapi"
+      version = "~>2.0"
+    }
     random = {
       source  = "hashicorp/random"
       version = "~>3.1"
@@ -35,10 +39,29 @@ variable "environment_name" {
   type        = string
 }
 
-variable "principal_id" {
-  description = "The principal ID of the current user"
+# Azure AI Foundry Configuration (user-provided)
+variable "project_endpoint" {
+  description = "Azure AI Foundry Project Endpoint (e.g., https://your-project.openai.azure.com/)"
   type        = string
-  default     = ""
+  # Removed: default = "https://your-ai-foundry-project.openai.azure.com/"
+
+  validation {
+    condition = can(regex("^https://.*", var.project_endpoint))
+    error_message = "Project endpoint must start with https://"
+  }
+}
+
+variable "azure_openai_api_key" {
+  description = "Azure OpenAI API Key for your AI Foundry project"
+  type        = string
+  # Removed: default = "placeholder-update-after-deployment"
+  sensitive   = true
+}
+
+variable "model_name" {
+  description = "Azure OpenAI Model Deployment Name"
+  type        = string
+  # Removed: default = "gpt-4o"
 }
 
 # Configure the Azure Provider
@@ -118,6 +141,14 @@ resource "azurecaf_name" "user_assigned_identity" {
   clean_input   = true
 }
 
+# Assign Key Vault Secrets Officer RBAC role to the Terraform runner
+# This is required for the runner to create the secrets.
+resource "azurerm_role_assignment" "key_vault_secrets_officer" {
+  scope                = azurerm_key_vault.main.id
+  role_definition_name = "Key Vault Secrets Officer"
+  principal_id         = data.azurerm_client_config.current.object_id
+}
+
 # Resource Group
 resource "azurerm_resource_group" "main" {
   name     = azurecaf_name.resource_group.result
@@ -154,45 +185,38 @@ resource "azurerm_log_analytics_workspace" "main" {
 
 # Key Vault
 resource "azurerm_key_vault" "main" {
-  name                        = azurecaf_name.key_vault.result
-  location                    = azurerm_resource_group.main.location
-  resource_group_name         = azurerm_resource_group.main.name
-  enabled_for_disk_encryption = true
-  tenant_id                   = data.azurerm_client_config.current.tenant_id
-  soft_delete_retention_days  = 7
-  purge_protection_enabled    = false
-  sku_name                    = "standard"
+  name                          = azurecaf_name.key_vault.result
+  location                      = azurerm_resource_group.main.location
+  resource_group_name           = azurerm_resource_group.main.name
+  enabled_for_disk_encryption   = true
+  tenant_id                     = data.azurerm_client_config.current.tenant_id
+  soft_delete_retention_days    = 7
+  purge_protection_enabled      = false
+  sku_name                      = "standard"
+  enable_rbac_authorization     = true
 
-  access_policy {
-    tenant_id = data.azurerm_client_config.current.tenant_id
-    object_id = data.azurerm_client_config.current.object_id
-
-    key_permissions = [
-      "Get", "List", "Create", "Delete", "Update"
-    ]
-
-    secret_permissions = [
-      "Get", "List", "Set", "Delete", "Recover", "Backup", "Restore"
-    ]
-
-    storage_permissions = [
-      "Get", "List", "Set", "Delete"
-    ]
-  }
-
-  # Access policy for the managed identity
-  access_policy {
-    tenant_id = data.azurerm_client_config.current.tenant_id
-    object_id = azurerm_user_assigned_identity.main.principal_id
-
-    secret_permissions = [
-      "Get", "List"
-    ]
-  }
 
   tags = {
     "azd-env-name" = var.environment_name
   }
+}
+
+# Assign Key Vault Secrets User RBAC role to the Managed Identity
+# This replaces the old access_policy block
+resource "azurerm_role_assignment" "key_vault_secrets_user" {
+  scope                = azurerm_key_vault.main.id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = azurerm_user_assigned_identity.main.principal_id
+}
+
+# Get the current subscription ID for the next role assignment
+data "azurerm_subscription" "current" {}
+
+# Assign Azure AI User RBAC role to the Managed Identity at the subscription level
+resource "azurerm_role_assignment" "azure_ai_user" {
+  scope                = data.azurerm_subscription.current.id
+  role_definition_name = "Azure AI User"
+  principal_id         = azurerm_user_assigned_identity.main.principal_id
 }
 
 # Container Registry
@@ -229,12 +253,14 @@ resource "azurerm_container_app_environment" "main" {
 
 # Storage Account for diagrams
 resource "azurerm_storage_account" "main" {
-  name                     = azurecaf_name.storage_account.result
-  resource_group_name      = azurerm_resource_group.main.name
-  location                 = azurerm_resource_group.main.location
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
-  account_kind             = "StorageV2"
+  name                          = azurecaf_name.storage_account.result
+  resource_group_name           = azurerm_resource_group.main.name
+  location                      = azurerm_resource_group.main.location
+  account_tier                  = "Standard"
+  account_replication_type      = "LRS"
+  account_kind                  = "StorageV2"
+  public_network_access_enabled = true
+  allow_nested_items_to_be_public = true
 
   blob_properties {
     cors_rule {
@@ -253,8 +279,8 @@ resource "azurerm_storage_account" "main" {
 
 # Storage Container for diagrams
 resource "azurerm_storage_container" "diagrams" {
-  name                  = "diagrams"
-  storage_account_name  = azurerm_storage_account.main.name
+  name                 = "diagrams"
+  storage_account_name = azurerm_storage_account.main.name
   container_access_type = "blob"
 }
 
@@ -299,13 +325,13 @@ resource "azurerm_cosmosdb_sql_database" "main" {
 
 # CosmosDB SQL Container
 resource "azurerm_cosmosdb_sql_container" "architectures" {
-  name                  = "architectures"
-  resource_group_name   = azurerm_resource_group.main.name
-  account_name          = azurerm_cosmosdb_account.main.name
-  database_name         = azurerm_cosmosdb_sql_database.main.name
-  partition_key_paths   = ["/userId"]
+  name                = "architectures"
+  resource_group_name = azurerm_resource_group.main.name
+  account_name        = azurerm_cosmosdb_account.main.name
+  database_name       = azurerm_cosmosdb_sql_database.main.name
+  partition_key_paths = ["/userId"]
   partition_key_version = 1
-  throughput            = 400
+  throughput          = 400
 }
 
 # Store secrets in Key Vault
@@ -325,10 +351,19 @@ resource "azurerm_key_vault_secret" "storage_connection_string" {
   depends_on = [azurerm_key_vault.main]
 }
 
-# Azure OpenAI API Key (user will need to update this value after deployment)
+# Azure OpenAI API Key (from user input)
 resource "azurerm_key_vault_secret" "azure_openai_api_key" {
   name         = "azure-openai-api-key"
-  value        = "B9XxAiVlYmLFfMMzw992h0qq1tn5oCmGPEucABVmNGFtFA1DScJCJQQJ99BDACfhMk5XJ3w3AAAAACOGoPxN"
+  value        = var.azure_openai_api_key
+  key_vault_id = azurerm_key_vault.main.id
+
+  depends_on = [azurerm_key_vault.main]
+}
+
+# Azure AI Foundry Project Endpoint (from user input)
+resource "azurerm_key_vault_secret" "project_endpoint" {
+  name         = "project-endpoint"
+  value        = var.project_endpoint
   key_vault_id = azurerm_key_vault.main.id
 
   depends_on = [azurerm_key_vault.main]
@@ -345,6 +380,13 @@ resource "azurerm_container_app" "mcp_service" {
     type         = "UserAssigned"
     identity_ids = [azurerm_user_assigned_identity.main.id]
   }
+  
+    # Enable DAPR for service-to-service communication
+  dapr {
+    app_id   = "mcp-service"
+    app_port = 8001
+  }
+
 
   template {
     container {
@@ -358,7 +400,6 @@ resource "azurerm_container_app" "mcp_service" {
         value = "/app"
       }
     }
-
     min_replicas = 1
     max_replicas = 3
   }
@@ -379,14 +420,13 @@ resource "azurerm_container_app" "mcp_service" {
   }
 
   tags = {
-    "azd-env-name"     = var.environment_name
+    "azd-env-name"   = var.environment_name
     "azd-service-name" = "mcp-service"
   }
 
   depends_on = [azurerm_role_assignment.acr_pull]
 }
 
-# Backend Container App
 # Backend Container App
 resource "azurerm_container_app" "backend" {
   name                         = "backend"
@@ -416,113 +456,95 @@ resource "azurerm_container_app" "backend" {
         name  = "USE_MCP"
         value = "true"
       }
-
       env {
         name  = "MCP_HTTP_SERVICE_URL"
         value = "https://${azurerm_container_app.mcp_service.name}.internal.${azurerm_container_app_environment.main.default_domain}"
       }
-
       env {
         name  = "USE_AZURE_SERVICES"
         value = "true"
       }
-
       env {
         name  = "AZURE_USE_MANAGED_IDENTITY"
         value = "true"
       }
-
+      env {
+        name  = "AZURE_AI_USE_MANAGED_IDENTITY"
+        value = "true"
+      }
       env {
         name  = "AZURE_CLIENT_ID"
         value = azurerm_user_assigned_identity.main.client_id
       }
-
       env {
         name  = "AZURE_COSMOS_ENDPOINT"
         value = azurerm_cosmosdb_account.main.endpoint
       }
-
       env {
         name        = "AZURE_COSMOS_KEY"
         secret_name = "cosmos-key"
       }
-
       env {
         name  = "AZURE_COSMOS_DATABASE_NAME"
         value = azurerm_cosmosdb_sql_database.main.name
       }
-
       env {
         name  = "AZURE_COSMOS_CONTAINER_NAME"
         value = azurerm_cosmosdb_sql_container.architectures.name
       }
-
       env {
         name        = "AZURE_STORAGE_CONNECTION_STRING"
         secret_name = "storage-connection-string"
       }
-
       env {
         name  = "AZURE_STORAGE_CONTAINER_NAME"
         value = azurerm_storage_container.diagrams.name
       }
-
       env {
         name  = "AZURE_STORAGE_ACCOUNT_URL"
         value = azurerm_storage_account.main.primary_blob_endpoint
       }
-
+      env {
+        name        = "PROJECT_ENDPOINT"
+        secret_name = "project-endpoint"
+      }
       env {
         name        = "AZURE_OPENAI_API_KEY"
         secret_name = "azure-openai-api-key"
       }
-
       env {
         name  = "AZURE_OPENAI_API_VERSION"
         value = "2024-12-01-preview"
       }
-
-      env {
-        name  = "PROJECT_ENDPOINT"
-        value = "https://ai-service-kp.services.ai.azure.com/api/projects/kp-aifoundry"  # Set from user's .env
-      }
-
       env {
         name  = "MODEL_NAME"
-        value = "gpt-4o"
+        value = var.model_name
       }
-
       env {
         name  = "DEPLOYMENT_NAME"
-        value = "gpt-4o"
+        value = var.model_name
       }
-
       env {
         name  = "AGENT_NAME"
         value = "architectai-design-agent"
       }
-
       env {
         name  = "DIAGRAM_AGENT_NAME"
         value = "architectai-diagram-agent"
       }
-
       env {
         name  = "VALIDATION_AGENT_NAME"
         value = "architectai-validation-agent"
       }
-
       env {
-        name  = "AGENT_NAME"
-        value = "architectai-design-agent"
+        name  = "MCP_HTTP_TIMEOUT"
+        value = "60"
       }
-
       env {
-        name  = "MODEL_NAME"
-        value = "gpt-4o"
+        name  = "MCP_SERVER_PATH"
+        value = "mcp_diagrams_server.py"
       }
     }
-
     min_replicas = 1
     max_replicas = 10
   }
@@ -542,6 +564,11 @@ resource "azurerm_container_app" "backend" {
     value = azurerm_key_vault_secret.azure_openai_api_key.value
   }
 
+  secret {
+    name  = "project-endpoint"
+    value = azurerm_key_vault_secret.project_endpoint.value
+  }
+
   ingress {
     allow_insecure_connections = false
     external_enabled           = false
@@ -558,14 +585,36 @@ resource "azurerm_container_app" "backend" {
   }
 
   tags = {
-    "azd-env-name"     = var.environment_name
+    "azd-env-name"   = var.environment_name
     "azd-service-name" = "backend"
   }
 
   depends_on = [azurerm_role_assignment.acr_pull, azurerm_container_app.mcp_service]
 }
 
-# Frontend Container App
+# Enable CORS for backend container app
+resource "azapi_resource_action" "backend_cors" {
+  type        = "Microsoft.App/containerApps@2024-03-01"
+  resource_id = azurerm_container_app.backend.id
+  method      = "PATCH"
+ 
+  body = {
+    properties = {
+      configuration = {
+        ingress = {
+          corsPolicy = {
+            allowedOrigins = ["*"]
+            allowedMethods = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+            allowedHeaders = ["*"]
+            allowCredentials = false
+          }
+        }
+      }
+    }
+  }
+  depends_on = [azurerm_container_app.backend]
+}
+
 # Frontend Container App
 resource "azurerm_container_app" "frontend" {
   name                         = "frontend"
@@ -596,7 +645,6 @@ resource "azurerm_container_app" "frontend" {
         value = "production"
       }
     }
-
     min_replicas = 1
     max_replicas = 5
   }
@@ -617,9 +665,8 @@ resource "azurerm_container_app" "frontend" {
   }
 
   tags = {
-    "azd-env-name"     = var.environment_name
+    "azd-env-name"   = var.environment_name
     "azd-service-name" = "frontend"
   }
-
   depends_on = [azurerm_role_assignment.acr_pull, azurerm_container_app.backend]
 }

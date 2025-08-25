@@ -106,7 +106,7 @@ output "AZURE_CLIENT_ID" {
 }
 
 output "PROJECT_ENDPOINT" {
-  value = ""  # User will need to set this after creating Azure AI Projects resource
+  value = "" # User will need to set this after creating Azure AI Projects resource
 }
 
 output "SERVICE_WEB_IDENTITY_PRINCIPAL_ID" {
