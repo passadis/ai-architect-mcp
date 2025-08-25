@@ -313,7 +313,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Azure A2A Translation](https://github.com/passadis/azure-a2a-translation) - Agent-to-Agent translation service
 - [Azure Container Apps Samples](https://github.com/Azure-Samples/container-apps-store-api-microservice)
 - [Azure AI Projects Samples](https://github.com/Azure-Samples/azure-ai-projects-samples)
--- More at https://passadis.github.io
+
 ---
 
 **Made with ❤️ by [Konstantinos Passadis](https://github.com/passadis)**
