@@ -12,7 +12,8 @@ env/
 dist/
 build/
 *.log
-**/.env
+**/.env*
+**/.env.template
 # Docker
 *.tar
 *.img
