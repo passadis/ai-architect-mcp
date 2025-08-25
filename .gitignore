@@ -1,0 +1,57 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.env
+.env
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+*.log
+
+# Docker
+*.tar
+*.img
+*.container
+*.pid
+
+# VS Code
+.vscode/
+.history/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Azure Developer CLI
+.azure/
+azd.*
+*.azd
+
+# Terraform
+infra/.terraform/
+infra/.terraform.lock.hcl
+infra/*.tfstate
+infra/*.tfstate.*
+infra/crash.log
+infra/terraform.tfvars
+infra/*.tfplan
+
+# General
+*.bak
+*.swp
+*.swo
+*.tmp
+template-gallery-entry.json
+# Node.js (if any JS/TS is added)
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Web GUI static files (if generated)
+web-gui/static/*.tmp
+web-gui/static/*.log
