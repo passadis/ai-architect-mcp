@@ -25,7 +25,7 @@ terraform {
 variable "location" {
   description = "The Azure region where resources will be created"
   type        = string
-  # No default - must be provided via tfvars or environment variable
+  default     = "northeurope"
 }
 
 variable "prefix" {
