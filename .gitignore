@@ -22,7 +22,7 @@ build/
 # VS Code
 .vscode/
 .history/
-*.code-workspace
+*.code-workspace*
 
 # OS files
 .DS_Store
