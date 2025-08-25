@@ -60,6 +60,7 @@ This solution provides an intelligent system for generating professional Azure a
 - **Managed Identity**: Secure authentication without credentials
 - **Cosmos DB Storage**: Persistent architecture storage and versioning
 - **Container Apps**: Scalable, serverless container platform
+- **Dapr Service to Service**: Seamless Service to Service Communications
 - **Monitoring**: Comprehensive logging and monitoring with Application Insights
 
 ## 🚀 Quick Start
@@ -68,6 +69,7 @@ This solution provides an intelligent system for generating professional Azure a
 - [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 - [Azure Developer CLI](https://docs.microsoft.com/en-us/azure/developer/azure-developer-cli/install-azd)
 - Azure subscription with appropriate permissions
+- Azure AI Foundry Agents Project in the same Subscription
 
 ### Deployment
 
@@ -75,17 +77,38 @@ This solution provides an intelligent system for generating professional Azure a
    ```bash
    azd init --template passadis/ai-architect-webapp
    ```
-### You will get asked to select an Environment name, Subscription and Regiom
-### Once the build starts you will get asked to provide:
-### Azure OpenAI API Key from your Azure OpenAI Agent Service
-### Azure OpenAI Project Endpoint, in the format https://your-foundry-service.cognitiveservices.azure.com/your-foundry-project
-### The Model Deployment name, which should be gpt-4o in most cases
+ You will get asked to select an Environment name, Subscription and Region
+
+ Once the build starts you will get asked to provide:
+
+ Azure OpenAI API Key from your Azure OpenAI Agent Service
+
+ Azure OpenAI Project Endpoint, in the format https://your-foundry-service.cognitiveservices.azure.com/your-foundry-project
+
+ The Model Deployment name, which should be gpt-4o in most cases
 
 ## Azure AI Agent Service offers 2 types of setup:
-### Basic : [text](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fazure-ai-foundry%2Ffoundry-samples%2Frefs%2Fheads%2Fmain%2Fsamples%2Fmicrosoft%2Finfrastructure-setup%2F40-basic-agent-setup%2Fbasic-setup.json)
-### Standard: [text](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fazure-ai-foundry%2Ffoundry-samples%2Frefs%2Fheads%2Fmain%2Fsamples%2Fmicrosoft%2Finfrastructure-setup%2F41-standard-agent-setup%2Fazuredeploy.json)
 
-✨ What Makes This Project Special
+### Basic :
+ [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fazure-ai-foundry%2Ffoundry-samples%2Frefs%2Fheads%2Fmain%2Fsamples%2Fmicrosoft%2Finfrastructure-setup%2F40-basic-agent-setup%2Fbasic-setup.json)
+
+Deploy a basic agent setup that uses Managed Identity for authentication.
+An account and project are created.
+A GPT-4o model is deployed.
+A Microsoft-managed Key Vault is used by default.
+
+### Standard:
+ [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fazure-ai-foundry%2Ffoundry-samples%2Frefs%2Fheads%2Fmain%2Fsamples%2Fmicrosoft%2Finfrastructure-setup%2F41-standard-agent-setup%2Fazuredeploy.json)
+
+Deploy a standard agent setup that uses Managed Identity for authentication.
+An account and project are created.
+A GPT-4o model is deployed.
+Azure resources for storing customer data - Azure Storage, Azure Cosmos DB, and Azure AI Search - are automatically created if existing resources are't provided.
+These resources are connected to your project to store files, threads, and vector data.
+A Microsoft-managed Key Vault is used by default.
+
+
+### ✨  What Makes This Project Special
 
 - **🧠 Intelligent Architecture**: Combines Azure AI automation with a clean, maintainable codebase
 
