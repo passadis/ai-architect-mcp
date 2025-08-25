@@ -15,27 +15,8 @@
 
 This solution provides an intelligent system for generating professional Azure architecture diagrams with automatic validation and correction:
 
-```
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   Frontend      │    │   Backend API    │    │  MCP Service    │
-│   React App     ├────┤   FastAPI        ├────┤  Validation     │
-│                 │    │   AI Agents      │    │  & Generation   │
-└─────────────────┘    └──────────────────┘    └─────────────────┘
-          │                       │                       │
-          │                       ▼                       │
-          │            ┌──────────────────┐               │
-          │            │  Azure AI        │               │
-          └────────────┤  Projects        │◄──────────────┘
-                       │  GPT-4o          │
-                       └──────────────────┘
-                                │
-                                ▼
-                     ┌──────────────────┐
-                     │  Cosmos DB       │
-                     │  Architecture    │
-                     │  Storage         │
-                     └──────────────────┘
-```
+<img width="920" height="646" alt="ArchitectAIMCP" src="https://github.com/user-attachments/assets/6174b03e-76b3-45ed-887c-0fef5ae10cdd" />
+
 
 ## ✨ Features
 
@@ -73,7 +54,7 @@ This solution provides an intelligent system for generating professional Azure a
 
 1. **Clone the repository**:
    ```bash
-   azd init --template passadis/ai-architect-webapp
+   azd init --template passadis/ai-architect-mcp
    ```
 ### You will get asked to select an Environment name, Subscription and Regiom
 ### Once the build starts you will get asked to provide:
