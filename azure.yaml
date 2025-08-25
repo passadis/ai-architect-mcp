@@ -45,6 +45,12 @@ hooks:
           echo "⚠️  Warning: PROJECT_ENDPOINT not set. Update .env after deployment."
         fi
         
+        if [ -z "$AZURE_LOCATION" ]; then
+          echo "⚠️  Warning: AZURE_LOCATION not set. Defaulting to 'northeurope'."
+          export AZURE_LOCATION="northeurope"
+        fi
+        
+        echo "🌍 Deploying to Azure region: $AZURE_LOCATION"
         echo "✅ Pre-provision checks complete"
     windows:
       run: |
@@ -61,6 +67,12 @@ hooks:
           Write-Host "⚠️  Warning: PROJECT_ENDPOINT not set. Update .env after deployment." -ForegroundColor Yellow
         }
         
+        if (-not $env:AZURE_LOCATION) {
+          Write-Host "⚠️  Warning: AZURE_LOCATION not set. Defaulting to 'northeurope'." -ForegroundColor Yellow
+          $env:AZURE_LOCATION = "northeurope"
+        }
+        
+        Write-Host "🌍 Deploying to Azure region: $($env:AZURE_LOCATION)" -ForegroundColor Cyan
         Write-Host "✅ Pre-provision checks complete" -ForegroundColor Green
       shell: pwsh
 

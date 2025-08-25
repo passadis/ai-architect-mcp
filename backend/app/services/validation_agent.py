@@ -20,6 +20,11 @@ PROJECT_ENDPOINT = os.getenv("PROJECT_ENDPOINT")
 VALIDATION_AGENT_NAME = os.getenv("VALIDATION_AGENT_NAME", "architectai-validation-agent")
 MODEL_NAME = os.getenv("MODEL_NAME", "gpt-4o")
 
+# DAPR configuration for MCP service
+DAPR_PORT = "3500"
+DAPR_SERVICE_ID = "mcp-service"
+MCP_BASE_URL = f"http://localhost:{DAPR_PORT}/v1.0/invoke/{DAPR_SERVICE_ID}/method"
+
 # Global cache
 _cached_validation_agent_id = None
 _cached_validation_client = None
@@ -119,6 +124,8 @@ async def get_or_create_validation_agent():
             "- FunctionApp → FunctionApps (from diagrams.azure.compute)\n"
             "- LoadBalancer → LoadBalancers (from diagrams.azure.network)\n"
             "- VirtualNetwork → VirtualNetworks (from diagrams.azure.network)\n"
+            "- CRITICAL: FunctionAppss (double s) → FunctionApps (single s)\n"
+            "- CRITICAL: DataLakes → DataLake (from diagrams.azure.database or storage)\n"
             "- NEVER use LoadBalancerss (double s) - use LoadBalancers\n"
             "- NEVER use SQLDatabase (singular) - use SQLDatabases (plural)\n\n"
             
@@ -456,12 +463,14 @@ def auto_fix_common_errors(code: str) -> str:
     import os
     
     # Load our validated Azure component data
-    azure_nodes_path = os.path.join(os.path.dirname(__file__), "..", "..", "azure_nodes.json")
+    # First try the container path where it's copied
+    azure_nodes_path = os.path.join(os.path.dirname(__file__), "..", "..", "..", "azure_nodes.json")
     if not os.path.exists(azure_nodes_path):
         # Try alternative paths
         alternative_paths = [
             os.path.join(os.path.dirname(__file__), "..", "..", "..", "mcp-service", "azure_nodes.json"),
-            os.path.join(os.path.dirname(__file__), "..", "..", "..", "backend", "azure_nodes.json")
+            os.path.join(os.path.dirname(__file__), "..", "..", "..", "backend", "azure_nodes.json"),
+            os.path.join(os.path.dirname(__file__), "..", "..", "azure_nodes.json")  # fallback
         ]
         for path in alternative_paths:
             if os.path.exists(path):
@@ -498,19 +507,37 @@ def auto_fix_common_errors(code: str) -> str:
             # Handle specific known mistakes
             if canonical == "AppServices":
                 common_mistakes["AppService"] = canonical
+                common_mistakes["AppServicess"] = canonical  # Fix double s
             elif canonical == "KeyVaults":
                 common_mistakes["KeyVault"] = canonical
+                common_mistakes["KeyVaultss"] = canonical  # Fix double s
             elif canonical == "StorageAccounts":
                 common_mistakes["StorageAccount"] = canonical
+                common_mistakes["StorageAccountss"] = canonical  # Fix double s
             elif canonical == "SQLDatabases":
                 common_mistakes["SqlDatabase"] = canonical
                 common_mistakes["SQLDatabase"] = canonical
+                common_mistakes["SQLDatabasess"] = canonical  # Fix double s
             elif canonical == "ContainerRegistries":
                 common_mistakes["ACR"] = canonical
                 common_mistakes["ContainerRegistry"] = canonical
+                common_mistakes["ContainerRegistriess"] = canonical  # Fix double s
             elif canonical == "VM":
                 common_mistakes["VirtualMachine"] = canonical
                 common_mistakes["VirtualMachines"] = canonical
+            elif canonical == "FunctionApps":
+                common_mistakes["FunctionApp"] = canonical
+                common_mistakes["FunctionAppss"] = canonical  # Fix double s - CRITICAL!
+            elif canonical == "LoadBalancers":
+                common_mistakes["LoadBalancer"] = canonical
+                common_mistakes["LoadBalancerss"] = canonical  # Fix double s - CRITICAL!
+            elif canonical == "DataLake":
+                common_mistakes["DataLakes"] = canonical  # Fix plural - CRITICAL!
+            elif canonical == "DataLakeStorage":
+                common_mistakes["DataLakeStorages"] = canonical  # Fix plural
+            elif canonical == "ContainerInstances":
+                common_mistakes["ContainerInstance"] = canonical
+                common_mistakes["ContainerInstancess"] = canonical  # Fix double s
     
     logger.info("🔧 Using data-driven component validation for auto-fix...")
     
@@ -525,6 +552,27 @@ def auto_fix_common_errors(code: str) -> str:
             if re.search(pattern, fixed_code):
                 fixed_code = re.sub(pattern, correct, fixed_code)
                 fixes_applied.append(f"Fixed component: {mistake} -> {correct}")
+    
+    # CRITICAL: Add specific fixes for the exact errors we're seeing in logs
+    critical_fixes = {
+        'FunctionAppss': 'FunctionApps',  # Fix double s
+        'DataLakes': 'DataLake',          # Fix incorrect plural
+        'LoadBalancerss': 'LoadBalancers', # Fix double s
+        'AppServicess': 'AppServices',     # Fix double s
+        'KeyVaultss': 'KeyVaults',         # Fix double s
+        'StorageAccountss': 'StorageAccounts', # Fix double s
+        'SQLDatabasess': 'SQLDatabases',   # Fix double s
+        'ContainerInstancess': 'ContainerInstances', # Fix double s
+        'ContainerRegistriess': 'ContainerRegistries', # Fix double s
+    }
+    
+    for mistake, correct in critical_fixes.items():
+        if mistake in fixed_code:
+            # Word boundary replacement to avoid partial matches
+            pattern = r'\b' + re.escape(mistake) + r'\b'
+            if re.search(pattern, fixed_code):
+                fixed_code = re.sub(pattern, correct, fixed_code)
+                fixes_applied.append(f"CRITICAL FIX: {mistake} -> {correct}")
     
     # Remove ResourceGroup entirely (not available in diagrams)
     if 'ResourceGroup' in fixed_code:
@@ -593,38 +641,51 @@ def auto_fix_common_errors_regex(code: str) -> str:
     import re
     
     # Common import fixes with regex patterns to catch variations
+    # IMPORTANT: Order matters - more specific patterns first!
     fixes = [
-        # Handle variations like AppService, AppServices, AppServicess, AppServicesss, etc.
-        (r'AppServices+', 'AppServices'),
-        (r'AppService(?!s)', 'AppServices'),
+        # Handle FunctionApps variations (CRITICAL FIX for current issue)
+        (r'FunctionAppss+', 'FunctionApps'),  # Fix multiple s's first
+        (r'FunctionApp(?!s\b)', 'FunctionApps'),  # Fix missing s, but not if already correct
         
-        # Handle KeyVault variations
-        (r'KeyVaults+', 'KeyVaults'),
-        (r'KeyVault(?!s)', 'KeyVaults'),
+        # Handle DataLake variations (CRITICAL FIX for current issue)  
+        (r'DataLakes+', 'DataLake'),  # Fix multiple s's - DataLakes -> DataLake
+        (r'DataLake(?=\s|,|$|from)', 'DataLake'),  # Keep correct form
         
-        # Handle StorageAccount variations
+        # Handle AppService variations - more precise patterns
+        (r'AppServicess+', 'AppServices'),  # Fix multiple s's first
+        (r'AppService(?!s\b)', 'AppServices'),  # Fix missing s, but not if already correct
+        
+        # Handle KeyVault variations - more precise patterns
+        (r'KeyVaultss+', 'KeyVaults'),  # Fix multiple s's first  
+        (r'KeyVault(?!s\b)', 'KeyVaults'),  # Fix missing s, but not if already correct
+        
+        # Handle StorageAccount variations - more precise patterns
         (r'StorageAccountss+', 'StorageAccounts'),  # Fix multiple s's first
-        (r'StorageAccount(?!s)', 'StorageAccounts'), # Fix missing s
+        (r'StorageAccount(?!s\b)', 'StorageAccounts'), # Fix missing s, but not if already correct
         
         # Handle SQLManagedInstance (not available in diagrams.azure.compute)
         (r'SQLManagedInstance', 'SQLDatabases'),
         
-        # Handle other common variations
-        (r'SqlDatabases?', 'SQLDatabases'),
-        (r'VirtualMachines+', 'VM'),
-        (r'VirtualMachine(?!s)', 'VM'),
-        (r'NetworkSecurityGroups+', 'NetworkSecurityGroups'),
-        (r'NetworkSecurityGroup(?!s)', 'NetworkSecurityGroups'),
+        # Handle other common variations - more precise patterns
+        (r'SqlDatabases?(?!s\b)', 'SQLDatabases'),
+        (r'VirtualMachiness+', 'VM'),  # Fix multiple s's first
+        (r'VirtualMachine(?!s\b)', 'VM'),  # Fix to VM, but not if already correct
+        (r'NetworkSecurityGroupss+', 'NetworkSecurityGroups'),  # Fix multiple s's first
+        (r'NetworkSecurityGroup(?!s\b)', 'NetworkSecurityGroups'),  # Fix missing s
         
-        # Fix other common Azure service name variations
-        (r'ContainerRegistry', 'ContainerRegistries'),
-        (r'ContainerInstance', 'ContainerInstances'),
-        (r'FunctionApp', 'FunctionApps'),
-        (r'LoadBalancerss+', 'LoadBalancers'),  # Fix double 's'
-        (r'LoadBalancer(?!s)', 'LoadBalancers'),
-        (r'PublicIPAddress', 'PublicIpAddresses'),
-        (r'VirtualNetwork', 'VirtualNetworks'),
-        (r'SQLDatabase(?!s)', 'SQLDatabases'),  # Fix singular to plural
+        # Fix other common Azure service name variations - more precise patterns
+        (r'ContainerRegistryy+', 'ContainerRegistries'),  # Fix typos first
+        (r'ContainerRegistry(?!ies\b)', 'ContainerRegistries'),  # Fix missing ies
+        (r'ContainerInstancess+', 'ContainerInstances'),  # Fix multiple s's first
+        (r'ContainerInstance(?!s\b)', 'ContainerInstances'),  # Fix missing s
+        (r'LoadBalancerss+', 'LoadBalancers'),  # Fix double 's' - CRITICAL!
+        (r'LoadBalancer(?!s\b)', 'LoadBalancers'),  # Fix missing s
+        (r'PublicIPAddresss+', 'PublicIpAddresses'),  # Fix multiple s's
+        (r'PublicIPAddress(?!es\b)', 'PublicIpAddresses'),  # Fix missing es
+        (r'VirtualNetworkss+', 'VirtualNetworks'),  # Fix multiple s's
+        (r'VirtualNetwork(?!s\b)', 'VirtualNetworks'),  # Fix missing s
+        (r'SQLDatabasess+', 'SQLDatabases'),  # Fix multiple s's first
+        (r'SQLDatabase(?!s\b)', 'SQLDatabases'),  # Fix singular to plural
     ]
     
     fixed_code = code
@@ -716,8 +777,8 @@ async def enhanced_validate_diagram_code(architecture_description: str, diagram_
     """Enhanced validation using our new validation system"""
     
     if not ENHANCED_VALIDATION_AVAILABLE:
-        # Fallback to original validation
-        return await validate_diagram_code(architecture_description, diagram_code)
+        # Fallback to local validation directly (avoid recursion)
+        return local_validate_diagram_code(diagram_code)
     
     try:
         # Extract component names from code
@@ -736,8 +797,11 @@ async def enhanced_validate_diagram_code(architecture_description: str, diagram_
         try:
             import httpx
             import os
+            # MCP HTTP service configuration
+                     
+            # mcp_url = os.getenv("MCP_HTTP_SERVICE_URL", "http://localhost:8001")
             
-            mcp_url = os.getenv("MCP_HTTP_SERVICE_URL", "http://localhost:8001")
+            mcp_url = os.getenv("MCP_BASE_URL")
             
             # Call MCP validate-components tool
             async with httpx.AsyncClient() as client:

@@ -1,7 +1,14 @@
 # Enhanced diagram generator with validation integration
 import os
 import asyncio
-from .validation_agent import validate_diagram_code
+
+# Simple MCP-only validation - single source of truth
+async def validate_with_mcp_simple(architecture_description: str, diagram_code: str) -> dict:
+    """Simple MCP validation - single source of truth, no local dependencies"""
+    from .simple_mcp_validation import validate_and_fix_diagram_code_simple
+    
+    print("🔌 Using MCP service as single source of truth...")
+    return await validate_and_fix_diagram_code_simple(diagram_code, architecture_description)
 
 async def generate_and_validate_diagram(architecture_description: str, design_document: str = "") -> dict:
     """
@@ -44,19 +51,12 @@ async def generate_and_validate_diagram(architecture_description: str, design_do
                 if validation_results.get('corrected_code'):
                     print("🔧 Using corrected code from validation...")
                     generated_code = validation_results['corrected_code']
-                    
-                    # Apply additional local fixes to the corrected code
-                    from .validation_agent import auto_fix_common_errors
-                    locally_fixed_code = auto_fix_common_errors(generated_code)
-                    if locally_fixed_code != generated_code:
-                        print("🔧 Applied additional local fixes...")
-                        generated_code = locally_fixed_code
                 else:
                     print("⚠️ No corrected code available, regenerating...")
                     generated_code = await generate_diagram_code(architecture_description)
             
-            # Apply local fixes to any generated code
-            if current_iteration == 1:
+            # Apply local fixes ONLY on first iteration and ONLY if no corrected code was provided
+            if current_iteration == 1 and not validation_results.get('corrected_code'):
                 from .validation_agent import auto_fix_common_errors
                 locally_fixed_code = auto_fix_common_errors(generated_code)
                 if locally_fixed_code != generated_code:
@@ -99,7 +99,7 @@ async def generate_and_validate_diagram(architecture_description: str, design_do
             
             # Validate the generated diagram code
             print("🔍 Validating generated diagram code...")
-            validation_results = await validate_diagram_code(
+            validation_results = await validate_with_mcp_simple(
                 architecture_description, 
                 generated_code
             )

@@ -13,8 +13,12 @@ MODEL_NAME = os.getenv("MODEL_NAME", "gpt-4o")
 AGENT_NAME = os.getenv("MCP_DIAGRAM_AGENT_NAME", "architectai-mcp-diagram-agent")
 DIAGRAMS_OUTPUT_DIR = os.getenv("DIAGRAMS_OUTPUT_DIR", "static/diagrams")
 
+DAPR_PORT = "3500"
+DAPR_SERVICE_ID = "mcp-service"
+
 # MCP HTTP service configuration
-MCP_HTTP_SERVICE_URL = os.getenv("MCP_HTTP_SERVICE_URL", "http://localhost:8001")
+MCP_BASE_URL = f"http://localhost:{DAPR_PORT}/v1.0/invoke/{DAPR_SERVICE_ID}/method"
+# MCP_HTTP_SERVICE_URL = os.getenv("MCP_SERVICE_URL") or os.getenv("MCP_HTTP_SERVICE_URL", "http://localhost:8001")
 MCP_HTTP_TIMEOUT = int(os.getenv("MCP_HTTP_TIMEOUT", "60"))
 
 _cached_agent_id = None
@@ -24,7 +28,7 @@ async def validate_components_via_mcp(component_names: list) -> Dict[str, Any]:
     try:
         async with httpx.AsyncClient(timeout=MCP_HTTP_TIMEOUT) as client:
             response = await client.post(
-                f"{MCP_HTTP_SERVICE_URL}/mcp/tools/call",
+                f"{MCP_BASE_URL}/mcp/tools/call",
                 json={
                     "name": "validate_azure_components",
                     "arguments": {
@@ -44,12 +48,74 @@ async def validate_components_via_mcp(component_names: list) -> Dict[str, Any]:
     except Exception as e:
         return {"validation_results": {}, "error": str(e)}
 
+async def validate_import_statements_via_mcp(import_statements: list) -> Dict[str, Any]:
+    """Validate import statements using MCP HTTP service"""
+    try:
+        # For now, let's build this validation logic using the existing component validation
+        # and enhance it to check module paths
+        
+        invalid_imports = []
+        
+        for stmt in import_statements:
+            module = stmt["module"]
+            component = stmt["component"] 
+            full_import = stmt["full_import"]
+            
+            # Validate the component exists
+            component_result = await validate_components_via_mcp([component])
+            
+            if component_result.get("error"):
+                invalid_imports.append({
+                    "original_import": full_import,
+                    "error": f"MCP service error: {component_result['error']}"
+                })
+                continue
+            
+            validation_results = component_result.get("validation_results", {})
+            
+            # Check if component is valid
+            if component not in validation_results:
+                invalid_imports.append({
+                    "original_import": full_import,
+                    "error": f"Component '{component}' not found in validation results"
+                })
+                continue
+            
+            component_info = validation_results[component]
+            
+            if not component_info.get("valid"):
+                # Component doesn't exist at all
+                invalid_imports.append({
+                    "original_import": full_import,
+                    "error": f"Component '{component}' does not exist",
+                    "suggestions": component_info.get("suggestions", [])
+                })
+            else:
+                # Component exists, but check if it's in the right module
+                correct_module = component_info.get("submodule")
+                if correct_module and correct_module != module:
+                    suggested_import = f"from diagrams.azure.{correct_module} import {component}"
+                    invalid_imports.append({
+                        "original_import": full_import,
+                        "suggested_import": suggested_import,
+                        "error": f"Component '{component}' should be imported from '{correct_module}', not '{module}'"
+                    })
+        
+        return {
+            "invalid_imports": invalid_imports,
+            "total_checked": len(import_statements),
+            "errors_found": len(invalid_imports)
+        }
+            
+    except Exception as e:
+        return {"invalid_imports": [], "error": str(e)}
+
 async def suggest_architecture_components_via_mcp(description: str, architecture_types: list = None) -> Dict[str, Any]:
     """Get architecture component suggestions using MCP HTTP service"""
     try:
         async with httpx.AsyncClient(timeout=MCP_HTTP_TIMEOUT) as client:
             response = await client.post(
-                f"{MCP_HTTP_SERVICE_URL}/mcp/tools/call",
+                f"{MCP_BASE_URL}/mcp/tools/call",
                 json={
                     "name": "suggest_architecture_components",
                     "arguments": {
@@ -75,7 +141,7 @@ async def generate_validated_diagram_via_mcp(description: str, provider: str = "
     try:
         async with httpx.AsyncClient(timeout=MCP_HTTP_TIMEOUT) as client:
             response = await client.post(
-                f"{MCP_HTTP_SERVICE_URL}/mcp/tools/call",
+                f"{MCP_BASE_URL}/mcp/tools/call",
                 json={
                     "name": "generate_validated_diagram",
                     "arguments": {
@@ -139,7 +205,7 @@ async def check_mcp_service_health():
     """Check if MCP HTTP service is available"""
     try:
         async with httpx.AsyncClient(timeout=5.0) as client:
-            response = await client.get(f"{MCP_HTTP_SERVICE_URL}/health")
+            response = await client.get(f"{MCP_BASE_URL}/health")
             return response.status_code == 200
     except Exception:
         return False
@@ -149,7 +215,7 @@ async def call_mcp_tool(tool_name: str, arguments: Dict[str, Any]) -> Dict[str, 
     try:
         async with httpx.AsyncClient(timeout=MCP_HTTP_TIMEOUT) as client:
             response = await client.post(
-                f"{MCP_HTTP_SERVICE_URL}/mcp/tools/call",
+                f"{MCP_BASE_URL}/mcp/tools/call",
                 json={
                     "name": tool_name,
                     "arguments": arguments
@@ -185,7 +251,7 @@ async def generate_diagram_with_mcp_http(architecture_description: str) -> dict:
         print("🎨 Generating diagram with MCP...")
         async with httpx.AsyncClient(timeout=MCP_HTTP_TIMEOUT) as client:
             response = await client.post(
-                f"{MCP_HTTP_SERVICE_URL}/mcp/generate-diagram",
+                f"{MCP_BASE_URL}/mcp/generate-diagram",
                 json={
                     "architecture_description": architecture_description
                 }
@@ -268,7 +334,7 @@ async def analyze_architecture_with_mcp_http(diagram_code: str) -> dict:
         
         async with httpx.AsyncClient(timeout=MCP_HTTP_TIMEOUT) as client:
             response = await client.post(
-                f"{MCP_HTTP_SERVICE_URL}/mcp/analyze-architecture",
+                f"{MCP_BASE_URL}/mcp/analyze-architecture",
                 json={
                     "diagram_code": diagram_code
                 }
