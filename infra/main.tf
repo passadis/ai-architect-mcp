@@ -351,7 +351,7 @@ resource "azurerm_key_vault_secret" "storage_connection_string" {
   value        = azurerm_storage_account.main.primary_connection_string
   key_vault_id = azurerm_key_vault.main.id
 
-  depends_on = [azurerm_key_vault.main]
+  depends_on = [azurerm_role_assignment.key_vault_secrets_officer]
 }
 
 # Azure OpenAI API Key (from user input)
@@ -360,7 +360,7 @@ resource "azurerm_key_vault_secret" "azure_openai_api_key" {
   value        = var.azure_openai_api_key
   key_vault_id = azurerm_key_vault.main.id
 
-  depends_on = [azurerm_key_vault.main]
+  depends_on = [azurerm_role_assignment.key_vault_secrets_officer]
 }
 
 # Azure AI Foundry Project Endpoint (from user input)
@@ -369,7 +369,7 @@ resource "azurerm_key_vault_secret" "project_endpoint" {
   value        = var.project_endpoint
   key_vault_id = azurerm_key_vault.main.id
 
-  depends_on = [azurerm_key_vault.main]
+  depends_on = [azurerm_role_assignment.key_vault_secrets_officer]
 }
 
 # MCP Service Container App
