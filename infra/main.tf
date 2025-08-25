@@ -147,6 +147,8 @@ resource "azurerm_role_assignment" "key_vault_secrets_officer" {
   scope                = azurerm_key_vault.main.id
   role_definition_name = "Key Vault Secrets Officer"
   principal_id         = data.azurerm_client_config.current.object_id
+  
+  depends_on = [azurerm_key_vault.main]
 }
 
 # Resource Group
@@ -340,7 +342,8 @@ resource "azurerm_key_vault_secret" "cosmos_key" {
   value        = azurerm_cosmosdb_account.main.primary_key
   key_vault_id = azurerm_key_vault.main.id
 
-  depends_on = [azurerm_key_vault.main]
+  depends_on = [azurerm_role_assignment.key_vault_secrets_officer]
+  
 }
 
 resource "azurerm_key_vault_secret" "storage_connection_string" {
