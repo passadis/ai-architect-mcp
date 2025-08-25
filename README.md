@@ -1,8 +1,15 @@
-# AI Architecture Diagram Generator with MCP Validation
+<p align="center">
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=azure,terraform,vscode,python,react,vite,github" />
+  </a>
+</p>
+
+<h1 align="center">AI Architecture Diagram Generator with MCP Validation</h1>
+
 
 > **Intelligent Azure architecture diagram generator using AI agents, MCP service validation, and comprehensive Azure component library.**
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fpassadis%2Fai-architect-webapp%2Fmain%2Finfra%2Fmain.json)
+
 
 ## 🏗️ Architecture
 
@@ -70,13 +77,13 @@ This solution provides an intelligent system for generating professional Azure a
    ```
 ### You will get asked to select an Environment name, Subscription and Regiom
 ### Once the build starts you will get asked to provide:
-## Azure OpenAI API Key from your Azure OpenAI Agent Service
-## Azure OpenAI Project Endpoint, in the format https://your-foundry-service.cognitiveservices.azure.com/your-foundry-project
-## The Model Deployment name, which should be gpt-4o in most cases
+### Azure OpenAI API Key from your Azure OpenAI Agent Service
+### Azure OpenAI Project Endpoint, in the format https://your-foundry-service.cognitiveservices.azure.com/your-foundry-project
+### The Model Deployment name, which should be gpt-4o in most cases
 
 ## Azure AI Agent Service offers 2 types of setup:
-# Basic : [text](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fazure-ai-foundry%2Ffoundry-samples%2Frefs%2Fheads%2Fmain%2Fsamples%2Fmicrosoft%2Finfrastructure-setup%2F40-basic-agent-setup%2Fbasic-setup.json)
-# Standard: [text](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fazure-ai-foundry%2Ffoundry-samples%2Frefs%2Fheads%2Fmain%2Fsamples%2Fmicrosoft%2Finfrastructure-setup%2F41-standard-agent-setup%2Fazuredeploy.json)
+### Basic : [text](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fazure-ai-foundry%2Ffoundry-samples%2Frefs%2Fheads%2Fmain%2Fsamples%2Fmicrosoft%2Finfrastructure-setup%2F40-basic-agent-setup%2Fbasic-setup.json)
+### Standard: [text](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fazure-ai-foundry%2Ffoundry-samples%2Frefs%2Fheads%2Fmain%2Fsamples%2Fmicrosoft%2Finfrastructure-setup%2F41-standard-agent-setup%2Fazuredeploy.json)
 
 ✨ What Makes This Project Special
 

@@ -1,0 +1,37 @@
+{
+  "title": "AI Architecture Diagram Generator with MCP Validation",
+  "description": "Intelligent Azure architecture diagram generator using AI agents, MCP service validation, and comprehensive Azure component library. Features automatic import correction, component validation, and professional diagram rendering.",
+  "authorUrl": "https://github.com/passadis",
+  "author": "Konstantinos Passadis", 
+  "source": "https://github.com/passadis/ai-architect-webapp",
+  "preview": "https://github.com/passadis/ai-architect-webapp/images/ai-architect-architecture.png",
+  "tags": [
+    "terraform",
+    "fastapi",
+    "ai",
+    "nodejs",
+    "reactjs",
+    "aifoundry",
+    "mcp",
+    "cosmosdb",
+    "community",
+    "new"
+  ],
+  "languages": [
+    "python",
+    "javascript",
+    "typescript"
+  ],
+  "azureServices": [
+    "aca",
+    "aaiprojects", 
+    "openai",
+    "azureai",
+    "cosmosdb",
+    "loganalytics",
+    "managedidentity",
+    "keyvault",
+    "aifoundry"
+  ],
+  "id": "4cbf9f47-fdf4-4c2e-ac61-52236f344375"
+}
