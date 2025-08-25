@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 def get_azure_credential():
     """
-    Get Azure credential with support for managed identity (for other Azure services)
+    Get Azure credential with support for managed identity (API key handled separately)
     
     Returns:
         Azure credential instance configured for the current environment
@@ -57,70 +57,26 @@ def get_credential_for_azure_openai_direct():
 
 def get_credential_for_azure_ai_projects():
     """
-    Get credential specifically for Azure AI Projects
+    Get credential specifically for Azure AI Projects - ONLY supports token-based authentication
     
-    Since Azure AI Projects SDK doesn't support API key authentication,
-    we return None to signal that the REST API approach should be used instead.
-    
-    Returns:
-        None for API key auth (use REST API), or TokenCredential for managed identity
-    """
-    use_managed_identity = os.getenv("AZURE_AI_USE_MANAGED_IDENTITY", "false").lower() == "true"
-    
-    if use_managed_identity:
-        # For deployed Container Apps - use managed identity with SDK
-        logger.info("Using managed identity for Azure AI Projects")
-        return get_azure_credential()
-    else:
-        # For API key authentication - return None to signal REST API usage
-        logger.info("Using API key authentication for Azure AI Projects (REST API mode)")
-        
-        # Validate that we have the required configuration
-        project_endpoint = os.getenv("PROJECT_ENDPOINT")
-        api_key = os.getenv("AZURE_OPENAI_API_KEY")
-        
-        if not project_endpoint:
-            raise ValueError("PROJECT_ENDPOINT not configured. Please provide your Azure AI Foundry project endpoint.")
-        
-        if not api_key or api_key == "placeholder-update-after-deployment":
-            raise ValueError("AZURE_OPENAI_API_KEY not configured. Please provide your Azure OpenAI API key.")
-        
-        # Return None to signal that REST API should be used
-        return None
-
-def get_azure_ai_projects_client():
-    """
-    Get Azure AI Projects client - automatically chooses between SDK and REST API
+    Note: Azure AI Projects SDK does not support API key authentication directly.
+    It only accepts TokenCredential implementations.
     
     Returns:
-        Client instance (either SDK-based or REST API-based)
+        TokenCredential for Azure AI Projects Client
     """
-    from .azure_ai_projects_rest_client import create_ai_projects_client
+    # Azure AI Projects SDK ONLY supports token-based authentication
+    # API keys are not supported - we must use managed identity or other token credential
     
-    project_endpoint = os.getenv("PROJECT_ENDPOINT")
+    # Check if we have an API key but explain the limitation
     api_key = os.getenv("AZURE_OPENAI_API_KEY")
-    use_managed_identity = os.getenv("AZURE_AI_USE_MANAGED_IDENTITY", "false").lower() == "true"
+    if api_key and api_key != "placeholder-update-after-deployment":
+        logger.warning("Azure AI Projects SDK does not support API key authentication directly")
+        logger.warning("Falling back to managed identity authentication for AI Projects")
     
-    if not project_endpoint:
-        raise ValueError("PROJECT_ENDPOINT not configured")
-    
-    if use_managed_identity:
-        # Use SDK with managed identity
-        logger.info("Creating Azure AI Projects client with managed identity")
-        try:
-            from azure.ai.projects import AIProjectClient
-            credential = get_azure_credential()
-            return AIProjectClient(endpoint=project_endpoint, credential=credential)
-        except Exception as e:
-            logger.error(f"Failed to create SDK client with managed identity: {e}")
-            raise
-    else:
-        # Use REST API with API key
-        if not api_key or api_key == "placeholder-update-after-deployment":
-            raise ValueError("AZURE_OPENAI_API_KEY not configured for API key authentication")
-        
-        logger.info("Creating Azure AI Projects client with REST API (API key)")
-        return create_ai_projects_client(project_endpoint, api_key)
+    # Always use token-based credential for Azure AI Projects
+    logger.info("Using token-based authentication for Azure AI Projects")
+    return get_azure_credential()
 
 def get_credential_for_scope(scope: str = None):
     """
