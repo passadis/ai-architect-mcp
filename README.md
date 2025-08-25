@@ -47,10 +47,11 @@ This solution provides an intelligent system for generating professional Azure a
 ## 🚀 Quick Start
 
 ### Prerequisites
-- [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
-- [Azure Developer CLI](https://docs.microsoft.com/en-us/azure/developer/azure-developer-cli/install-azd)
-- Azure subscription with appropriate permissions
-- Azure AI Foundry Agents Project in the same Subscription
+1. Azure subscription
+2. Azure CLI installed
+3. Azure Developer CLI (azd) installed
+4. Docker Desktop installed and running
+5. Git installed
 
 ### Deployment
 
