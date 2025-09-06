@@ -1,0 +1,45 @@
+{
+  "name": "Azure AI Architect Template",
+  "image": "mcr.microsoft.com/devcontainers/python:3.13-bullseye",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/azure/azure-dev/azd:latest": {},
+    "ghcr.io/devcontainers/features/azure-cli:1": {},
+    "ghcr.io/devcontainers/features/terraform:1": {},
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "lts"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-azuretools.azure-dev",
+        "ms-vscode.azure-account",
+        "ms-azuretools.vscode-docker",
+        "ms-azuretools.vscode-bicep",
+        "HashiCorp.terraform",
+        "ms-python.python",
+        "ms-python.flake8",
+        "ms-python.black-formatter",
+        "GitHub.vscode-github-actions"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.formatting.provider": "black"
+      }
+    }
+  },
+  "postCreateCommand": "set -e; pip install -r backend/requirements.txt || true; pip install -r mcp-service/requirements.txt || true; npm ci --prefix frontend/architect-ai || npm install --prefix frontend/architect-ai; echo '=== Development Environment Ready ==='; azd version; terraform version; az version",
+  "remoteUser": "vscode",
+  "forwardPorts": [8000, 5173],
+  "portsAttributes": {
+    "8000": {
+      "label": "Backend API",
+      "onAutoForward": "notify"
+    },
+    "5173": {
+      "label": "Vite Frontend",
+      "onAutoForward": "notify"
+    }
+  }
+}

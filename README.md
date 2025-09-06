@@ -13,7 +13,7 @@
 
 ## 🏗️ Architecture
 
-This solution provides an intelligent system for generating professional Azure architecture diagrams with automatic validation and correction:
+This solution provides an intelligent system for generating professional Azure architecture documents and diagrams with automatic validation and correction:
 
 <img width="920" height="646" alt="ArchitectAIMCP" src="https://github.com/user-attachments/assets/6174b03e-76b3-45ed-887c-0fef5ae10cdd" />
 
@@ -47,11 +47,17 @@ This solution provides an intelligent system for generating professional Azure a
 ## 🚀 Quick Start
 
 ### Prerequisites
+
+
+
 1. Azure subscription
 2. Azure CLI installed
 3. Azure Developer CLI (azd) installed
 4. Docker Desktop installed and running
 5. Git installed
+
+### You need an existing Azure AI Foundry Agents Service Project as described here:
+- ## [Azure AI Foundry Agents Service](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/overview)
 
 ### Deployment
 

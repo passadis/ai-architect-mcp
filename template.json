@@ -1,6 +1,6 @@
 {
-  "title": "AI Architecture Diagram Generator with MCP Validation",
-  "description": "Intelligent Azure architecture diagram generator using AI agents, MCP service validation, and comprehensive Azure component library. Features automatic import correction, component validation, and professional diagram rendering.",
+  "title": "Agentic Azure Architecture Document and Diagram Generator with MCP Validation",
+  "description": "Intelligent Azure architecture document and diagram generator using AI Foundry agents, MCP service validation, and comprehensive Azure component library. Features automatic import correction, smart component validation using MCP, Dapr for secure and easy Service to Service communications, and professional document and diagram rendering. A must have tool for every Azure Architect and Engineer",
   "authorUrl": "https://github.com/passadis",
   "author": "Konstantinos Passadis", 
   "source": "https://github.com/passadis/ai-architect-webapp",
@@ -20,13 +20,13 @@
   "languages": [
     "python",
     "javascript",
-    "typescript"
+    "reactjs"
   ],
   "azureServices": [
     "aca",
-    "aaiprojects", 
+    "azureai", 
     "openai",
-    "azureai",
+    "dapr",
     "cosmosdb",
     "loganalytics",
     "managedidentity",
