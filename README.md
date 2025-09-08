@@ -80,7 +80,7 @@ https://learn.microsoft.com/en-us/azure/ai-foundry/agents/quotas-limits
 
 1. **Clone the repository**:
    ```bash
-   azd init --template passadis/ai-architect-mcp
+   azd init --template passadis/ai-architect-webapp
    ```
    and then
    ```
@@ -89,7 +89,7 @@ https://learn.microsoft.com/en-us/azure/ai-foundry/agents/quotas-limits
 
  ### Full non interactive:
 ```bash
- azd init --template passadis/azure-a2a-translation -e <Environment Name> --up
+ azd init --template passadis/ai-architect-webapp -e <Environment Name> --up
    ```
 
 ### Azure AI Agent Service offers 2 types of setup Basic and Standard, this deploymnt uses the Basic Setup
