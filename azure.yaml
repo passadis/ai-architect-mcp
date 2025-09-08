@@ -35,69 +35,101 @@ hooks:
       run: |
         # Ensure environment is configured
         echo "Preparing Azure AI Architect deployment..."
-        echo "Important: You need an existing Azure AI Foundry PROJECT (not individual agents)."
-        echo "Create your project at: https://ai.azure.com/"
         echo ""
-        echo "Agents will be created AUTOMATICALLY by the application - no manual setup required!"
+        echo "⚠️  IMPORTANT: Azure AI Foundry Region Requirements"
+        echo "This template requires a region that supports Azure AI Foundry."
         echo ""
-        # Validate required environment variables
-        if [ -z "$PROJECT_ENDPOINT" ]; then
-          echo "Warning: PROJECT_ENDPOINT not set. Update .env after deployment."
-        fi
+        echo "✅ Supported regions:"
+        echo "  - East US (eastus)"
+        echo "  - East US 2 (eastus2)" 
+        echo "  - West US 2 (westus2)"
+        echo "  - West US 3 (westus3)"
+        echo "  - North Central US (northcentralus)"
+        echo "  - South Central US (southcentralus)"
+        echo "  - West Europe (westeurope)"
+        echo "  - North Europe (northeurope)"
+        echo "  - UK South (uksouth)"
+        echo "  - Australia East (australiaeast)"
+        echo "  - Japan East (japaneast)"
+        echo "  - Canada Central (canadacentral)"
+        echo "  - France Central (francecentral)"
+        echo "  - Switzerland North (switzerlandnorth)"
+        echo ""
+        echo "🤖 This template will automatically:"
+        echo "  ✅ Create Azure AI Foundry service"
+        echo "  ✅ Deploy GPT-4o model"
+        echo "  ✅ Create AI Project for agent management"
+        echo "  ✅ Configure managed identity authentication"
+        echo ""
         echo "Pre-provision checks complete"
     windows:
       shell: pwsh
       run: |
         # Ensure environment is configured
-        Write-Host "Preparing Azure AI Architect deployment..." -ForegroundColor Cyan
-        Write-Host "Important: You need an existing Azure AI Foundry PROJECT (not individual agents)." -ForegroundColor Yellow
-        Write-Host "Create your project at: https://ai.azure.com/" -ForegroundColor White
+        Write-Host "Preparing Azure AI Architect deployment..." -ForegroundColor Green
         Write-Host ""
-        Write-Host "Agents will be created AUTOMATICALLY by the application - no manual setup required!" -ForegroundColor Green
+        Write-Host "⚠️  IMPORTANT: Azure AI Foundry Region Requirements" -ForegroundColor Yellow
+        Write-Host "This template requires a region that supports Azure AI Foundry." -ForegroundColor Yellow
         Write-Host ""
-        # Validate required environment variables
-        if (-not $env:PROJECT_ENDPOINT) {
-          Write-Host "Warning: PROJECT_ENDPOINT not set. Update .env after deployment." -ForegroundColor Yellow
-        }
+        Write-Host "✅ Supported regions:" -ForegroundColor Green
+        Write-Host "  - East US (eastus)"
+        Write-Host "  - East US 2 (eastus2)"
+        Write-Host "  - West US 2 (westus2)"
+        Write-Host "  - West US 3 (westus3)"
+        Write-Host "  - North Central US (northcentralus)"
+        Write-Host "  - South Central US (southcentralus)"
+        Write-Host "  - West Europe (westeurope)"
+        Write-Host "  - North Europe (northeurope)"
+        Write-Host "  - UK South (uksouth)"
+        Write-Host "  - Australia East (australiaeast)"
+        Write-Host "  - Japan East (japaneast)"
+        Write-Host "  - Canada Central (canadacentral)"
+        Write-Host "  - France Central (francecentral)"
+        Write-Host "  - Switzerland North (switzerlandnorth)"
+        Write-Host ""
+        Write-Host "🤖 This template will automatically:" -ForegroundColor Cyan
+        Write-Host "  ✅ Create Azure AI Foundry service"
+        Write-Host "  ✅ Deploy GPT-4o model"
+        Write-Host "  ✅ Create AI Project for agent management"
+        Write-Host "  ✅ Configure managed identity authentication"
+        Write-Host ""
         Write-Host "Pre-provision checks complete" -ForegroundColor Green
 
   postprovision:
     posix:
       shell: sh
       run: |
-        echo "Azure AI Architect deployed successfully!"
+        echo "🎉 Azure AI Architect deployed successfully!"
         echo ""
-        echo "Next steps:"
-        echo "1. Update .env with your Azure AI Foundry project details:"
-        echo "   - PROJECT_ENDPOINT: Your Azure AI Foundry project endpoint"
-        echo "   - AGENT_NAME: (Optional) Custom agent name (default: architectai-design-agent)"
-        echo "   - MODEL_NAME: (Optional) Model to use (default: gpt-4o)"
+        echo "✅ What was automatically created:"
+        echo "  • Azure AI Foundry service with GPT-4o model"
+        echo "  • AI Project configured for agent management"
+        echo "  • All resources secured with managed identity"
         echo ""
-        echo "The application will automatically create these agents for you:"
-        echo "   - Architecture Design Agent - Generates detailed Azure architecture documents"
-        echo "   - Diagram Generation Agent - Creates visual architecture diagrams"
-        echo "   - Validation Agent - Validates and improves diagram quality"
+        echo "🚀 Your application is ready!"
+        echo "The AI agents will be created automatically when you first use the application."
         echo ""
-        echo "3. Access your application at the frontend URL shown above"
+        echo "📖 Next steps:"
+        echo "1. Access your application at the frontend URL shown above"
+        echo "2. Start generating Azure architecture designs!"
         echo ""
-        echo "Documentation: https://github.com/your-org/azure-ai-architect"
+        echo "Need help? Check the documentation for advanced configuration options."
     windows:
       shell: pwsh
       run: |
-        Write-Host "Azure AI Architect deployed successfully!" -ForegroundColor Green
+        Write-Host "🎉 Azure AI Architect deployed successfully!" -ForegroundColor Green
         Write-Host ""
-        Write-Host "Next steps:" -ForegroundColor Cyan
-        Write-Host "1. Update .env with your Azure AI Foundry project details:" -ForegroundColor White
-        Write-Host "   - PROJECT_ENDPOINT: Your Azure AI Foundry project endpoint" -ForegroundColor Gray
-        Write-Host "   - AGENT_NAME: (Optional) Custom agent name (default: architectai-design-agent)" -ForegroundColor Gray
-        Write-Host "   - MODEL_NAME: (Optional) Model to use (default: gpt-4o)" -ForegroundColor Gray
+        Write-Host "✅ What was automatically created:" -ForegroundColor Green
+        Write-Host "  • Azure AI Foundry service with GPT-4o model" -ForegroundColor Gray
+        Write-Host "  • AI Project configured for agent management" -ForegroundColor Gray
+        Write-Host "  • All resources secured with managed identity" -ForegroundColor Gray
         Write-Host ""
-        Write-Host "The application will automatically create these agents for you:" -ForegroundColor Green
-        Write-Host "   - Architecture Design Agent - Generates detailed Azure architecture documents" -ForegroundColor Gray
-        Write-Host "   - Diagram Generation Agent - Creates visual architecture diagrams" -ForegroundColor Gray
-        Write-Host "   - Validation Agent - Validates and improves diagram quality" -ForegroundColor Gray
+        Write-Host "🚀 Your application is ready!" -ForegroundColor Cyan
+        Write-Host "The AI agents will be created automatically when you first use the application." -ForegroundColor White
         Write-Host ""
-        Write-Host "3. Access your application at the frontend URL shown above" -ForegroundColor White
+        Write-Host "📖 Next steps:" -ForegroundColor Cyan
+        Write-Host "1. Access your application at the frontend URL shown above" -ForegroundColor White
+        Write-Host "2. Start generating Azure architecture designs!" -ForegroundColor White
         Write-Host ""
-        Write-Host "Documentation: https://github.com/your-org/azure-ai-architect" -ForegroundColor Cyan
+        Write-Host "Need help? Check the documentation for advanced configuration options." -ForegroundColor Gray
       

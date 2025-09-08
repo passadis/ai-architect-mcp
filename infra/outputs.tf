@@ -106,7 +106,32 @@ output "AZURE_CLIENT_ID" {
 }
 
 output "PROJECT_ENDPOINT" {
-  value = "" # User will need to set this after creating Azure AI Projects resource
+  value = "${azapi_resource.ai_project.id}/inference"
+}
+
+# Azure AI Foundry outputs
+output "AZURE_AI_FOUNDRY_NAME" {
+  value = azapi_resource.ai_foundry.name
+}
+
+output "AZURE_AI_FOUNDRY_ID" {
+  value = azapi_resource.ai_foundry.id
+}
+
+output "AZURE_AI_PROJECT_NAME" {
+  value = azapi_resource.ai_project.name
+}
+
+output "AZURE_AI_PROJECT_ID" {
+  value = azapi_resource.ai_project.id
+}
+
+output "AZURE_OPENAI_ENDPOINT" {
+  value = "https://${azapi_resource.ai_foundry.body.properties.customSubDomainName}.openai.azure.com/"
+}
+
+output "AZURE_OPENAI_DEPLOYMENT_NAME" {
+  value = azapi_resource.gpt4o_deployment.name
 }
 
 output "SERVICE_WEB_IDENTITY_PRINCIPAL_ID" {

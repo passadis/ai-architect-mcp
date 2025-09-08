@@ -38,29 +38,10 @@ variable "environment_name" {
   type        = string
 }
 
-# Azure AI Foundry Configuration (user-provided)
-variable "project_endpoint" {
-  description = "Azure AI Foundry Project Endpoint (e.g., https://your-project.openai.azure.com/)"
-  type        = string
-  # Removed: default = "https://your-ai-foundry-project.openai.azure.com/"
-
-  validation {
-    condition = can(regex("^https://.*", var.project_endpoint))
-    error_message = "Project endpoint must start with https://"
-  }
-}
-
-variable "azure_openai_api_key" {
-  description = "Azure OpenAI API Key for your AI Foundry project"
-  type        = string
-  # Removed: default = "placeholder-update-after-deployment"
-  sensitive   = true
-}
-
 variable "model_name" {
   description = "Azure OpenAI Model Deployment Name"
   type        = string
-  # Removed: default = "gpt-4o"
+  default     = "gpt-4o"
 }
 
 # Configure the Azure Provider
@@ -146,7 +127,7 @@ resource "azurerm_role_assignment" "key_vault_secrets_officer" {
   scope                = azurerm_key_vault.main.id
   role_definition_name = "Key Vault Secrets Officer"
   principal_id         = data.azurerm_client_config.current.object_id
-  
+
   depends_on = [azurerm_key_vault.main]
 }
 
@@ -186,15 +167,15 @@ resource "azurerm_log_analytics_workspace" "main" {
 
 # Key Vault
 resource "azurerm_key_vault" "main" {
-  name                          = azurecaf_name.key_vault.result
-  location                      = azurerm_resource_group.main.location
-  resource_group_name           = azurerm_resource_group.main.name
-  enabled_for_disk_encryption   = true
-  tenant_id                     = data.azurerm_client_config.current.tenant_id
-  soft_delete_retention_days    = 7
-  purge_protection_enabled      = false
-  sku_name                      = "standard"
-  enable_rbac_authorization     = true
+  name                        = azurecaf_name.key_vault.result
+  location                    = azurerm_resource_group.main.location
+  resource_group_name         = azurerm_resource_group.main.name
+  enabled_for_disk_encryption = true
+  tenant_id                   = data.azurerm_client_config.current.tenant_id
+  soft_delete_retention_days  = 7
+  purge_protection_enabled    = false
+  sku_name                    = "standard"
+  enable_rbac_authorization   = true
 
 
   tags = {
@@ -207,6 +188,101 @@ resource "azurerm_key_vault" "main" {
 resource "azurerm_role_assignment" "key_vault_secrets_user" {
   scope                = azurerm_key_vault.main.id
   role_definition_name = "Key Vault Secrets User"
+  principal_id         = azurerm_user_assigned_identity.main.principal_id
+}
+
+# Azure AI Foundry (AI Hub)
+resource "azapi_resource" "ai_foundry" {
+  type      = "Microsoft.CognitiveServices/accounts@2025-04-01-preview"
+  name      = "aifoundry-${substr(random_string.resource_token.result, 0, 8)}"
+  parent_id = azurerm_resource_group.main.id
+  location  = azurerm_resource_group.main.location
+  schema_validation_enabled = false
+
+  body = {
+    kind = "AIServices"
+    sku = {
+      name = "S0"
+    }
+    identity = {
+      type = "UserAssigned"
+      userAssignedIdentities = {
+        "${azurerm_user_assigned_identity.main.id}" = {}
+      }
+    }
+    properties = {
+      disableLocalAuth = false
+      allowProjectManagement = true
+      customSubDomainName = "aifoundry-${substr(random_string.resource_token.result, 0, 8)}"
+    }
+  }
+
+  tags = {
+    "azd-env-name" = var.environment_name
+  }
+}
+
+# GPT-4o Model Deployment
+resource "azapi_resource" "gpt4o_deployment" {
+  type      = "Microsoft.CognitiveServices/accounts/deployments@2024-10-01"
+  parent_id = azapi_resource.ai_foundry.id
+  name      = "gpt-4o"
+
+  body = {
+    sku = {
+      capacity = 30
+      name     = "GlobalStandard"
+    }
+    properties = {
+      model = {
+        name    = "gpt-4o"
+        format  = "OpenAI"
+        version = "2024-11-20"
+      }
+    }
+  }
+
+  depends_on = [azapi_resource.ai_foundry]
+}
+
+# Azure AI Project (as sub-resource of AI Foundry)
+resource "azapi_resource" "ai_project" {
+  type      = "Microsoft.CognitiveServices/accounts/projects@2025-04-01-preview"
+  parent_id = azapi_resource.ai_foundry.id
+  name      = "aiproj-${substr(random_string.resource_token.result, 0, 8)}"
+  location  = azurerm_resource_group.main.location
+
+  identity {
+    type = "SystemAssigned"
+  }
+
+  body = {
+    properties = {
+      description  = "AI Architect MCP Project"
+      displayName  = "AI Architect Project"
+    }
+  }
+
+  tags = {
+    "azd-env-name" = var.environment_name
+  }
+
+  depends_on = [
+    azapi_resource.ai_foundry
+  ]
+}
+
+# Grant Cognitive Services OpenAI User role to managed identity
+resource "azurerm_role_assignment" "openai_user" {
+  scope                = azapi_resource.ai_foundry.id
+  role_definition_name = "Cognitive Services OpenAI User"
+  principal_id         = azurerm_user_assigned_identity.main.principal_id
+}
+
+# Grant AI Developer role for AI project access
+resource "azurerm_role_assignment" "ai_developer" {
+  scope                = azapi_resource.ai_project.id
+  role_definition_name = "Azure AI Developer"
   principal_id         = azurerm_user_assigned_identity.main.principal_id
 }
 
@@ -254,13 +330,13 @@ resource "azurerm_container_app_environment" "main" {
 
 # Storage Account for diagrams
 resource "azurerm_storage_account" "main" {
-  name                          = azurecaf_name.storage_account.result
-  resource_group_name           = azurerm_resource_group.main.name
-  location                      = azurerm_resource_group.main.location
-  account_tier                  = "Standard"
-  account_replication_type      = "LRS"
-  account_kind                  = "StorageV2"
-  public_network_access_enabled = true
+  name                            = azurecaf_name.storage_account.result
+  resource_group_name             = azurerm_resource_group.main.name
+  location                        = azurerm_resource_group.main.location
+  account_tier                    = "Standard"
+  account_replication_type        = "LRS"
+  account_kind                    = "StorageV2"
+  public_network_access_enabled   = true
   allow_nested_items_to_be_public = true
 
   blob_properties {
@@ -280,8 +356,8 @@ resource "azurerm_storage_account" "main" {
 
 # Storage Container for diagrams
 resource "azurerm_storage_container" "diagrams" {
-  name                 = "diagrams"
-  storage_account_name = azurerm_storage_account.main.name
+  name                  = "diagrams"
+  storage_account_name  = azurerm_storage_account.main.name
   container_access_type = "blob"
 }
 
@@ -326,13 +402,13 @@ resource "azurerm_cosmosdb_sql_database" "main" {
 
 # CosmosDB SQL Container
 resource "azurerm_cosmosdb_sql_container" "architectures" {
-  name                = "architectures"
-  resource_group_name = azurerm_resource_group.main.name
-  account_name        = azurerm_cosmosdb_account.main.name
-  database_name       = azurerm_cosmosdb_sql_database.main.name
-  partition_key_paths = ["/userId"]
+  name                  = "architectures"
+  resource_group_name   = azurerm_resource_group.main.name
+  account_name          = azurerm_cosmosdb_account.main.name
+  database_name         = azurerm_cosmosdb_sql_database.main.name
+  partition_key_paths   = ["/userId"]
   partition_key_version = 1
-  throughput          = 400
+  throughput            = 400
 }
 
 # Store secrets in Key Vault
@@ -342,30 +418,12 @@ resource "azurerm_key_vault_secret" "cosmos_key" {
   key_vault_id = azurerm_key_vault.main.id
 
   depends_on = [azurerm_role_assignment.key_vault_secrets_officer]
-  
+
 }
 
 resource "azurerm_key_vault_secret" "storage_connection_string" {
   name         = "storage-connection-string"
   value        = azurerm_storage_account.main.primary_connection_string
-  key_vault_id = azurerm_key_vault.main.id
-
-  depends_on = [azurerm_role_assignment.key_vault_secrets_officer]
-}
-
-# Azure OpenAI API Key (from user input)
-resource "azurerm_key_vault_secret" "azure_openai_api_key" {
-  name         = "azure-openai-api-key"
-  value        = var.azure_openai_api_key
-  key_vault_id = azurerm_key_vault.main.id
-
-  depends_on = [azurerm_role_assignment.key_vault_secrets_officer]
-}
-
-# Azure AI Foundry Project Endpoint (from user input)
-resource "azurerm_key_vault_secret" "project_endpoint" {
-  name         = "project-endpoint"
-  value        = var.project_endpoint
   key_vault_id = azurerm_key_vault.main.id
 
   depends_on = [azurerm_role_assignment.key_vault_secrets_officer]
@@ -382,8 +440,8 @@ resource "azurerm_container_app" "mcp_service" {
     type         = "UserAssigned"
     identity_ids = [azurerm_user_assigned_identity.main.id]
   }
-  
-    # Enable DAPR for service-to-service communication
+
+  # Enable DAPR for service-to-service communication
   dapr {
     app_id   = "mcp-service"
     app_port = 8001
@@ -422,7 +480,7 @@ resource "azurerm_container_app" "mcp_service" {
   }
 
   tags = {
-    "azd-env-name"   = var.environment_name
+    "azd-env-name"     = var.environment_name
     "azd-service-name" = "mcp-service"
   }
 
@@ -506,13 +564,26 @@ resource "azurerm_container_app" "backend" {
         name  = "AZURE_STORAGE_ACCOUNT_URL"
         value = azurerm_storage_account.main.primary_blob_endpoint
       }
+      # Azure AI Foundry Configuration
       env {
-        name        = "PROJECT_ENDPOINT"
-        secret_name = "project-endpoint"
+        name  = "AZURE_OPENAI_ENDPOINT"
+        value = "https://${azapi_resource.ai_foundry.body.properties.customSubDomainName}.openai.azure.com/"
       }
       env {
-        name        = "AZURE_OPENAI_API_KEY"
-        secret_name = "azure-openai-api-key"
+        name  = "AZURE_AI_PROJECT_NAME"
+        value = azapi_resource.ai_project.name
+      }
+      env {
+        name  = "AZURE_AI_HUB_NAME"
+        value = azapi_resource.ai_foundry.name
+      }
+      env {
+        name  = "AZURE_OPENAI_DEPLOYMENT_NAME"
+        value = azapi_resource.gpt4o_deployment.name
+      }
+      env {
+        name  = "PROJECT_ENDPOINT"
+        value = "https://${azapi_resource.ai_foundry.body.properties.customSubDomainName}.services.ai.azure.com/api/projects/${azapi_resource.ai_project.name}"
       }
       env {
         name  = "AZURE_OPENAI_API_VERSION"
@@ -561,16 +632,6 @@ resource "azurerm_container_app" "backend" {
     value = azurerm_storage_account.main.primary_connection_string
   }
 
-  secret {
-    name  = "azure-openai-api-key"
-    value = azurerm_key_vault_secret.azure_openai_api_key.value
-  }
-
-  secret {
-    name  = "project-endpoint"
-    value = azurerm_key_vault_secret.project_endpoint.value
-  }
-
   ingress {
     allow_insecure_connections = false
     external_enabled           = false
@@ -587,7 +648,7 @@ resource "azurerm_container_app" "backend" {
   }
 
   tags = {
-    "azd-env-name"   = var.environment_name
+    "azd-env-name"     = var.environment_name
     "azd-service-name" = "backend"
   }
 
@@ -599,15 +660,15 @@ resource "azapi_resource_action" "backend_cors" {
   type        = "Microsoft.App/containerApps@2024-03-01"
   resource_id = azurerm_container_app.backend.id
   method      = "PATCH"
- 
+
   body = {
     properties = {
       configuration = {
         ingress = {
           corsPolicy = {
-            allowedOrigins = ["*"]
-            allowedMethods = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-            allowedHeaders = ["*"]
+            allowedOrigins   = ["*"]
+            allowedMethods   = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+            allowedHeaders   = ["*"]
             allowCredentials = false
           }
         }
@@ -667,7 +728,7 @@ resource "azurerm_container_app" "frontend" {
   }
 
   tags = {
-    "azd-env-name"   = var.environment_name
+    "azd-env-name"     = var.environment_name
     "azd-service-name" = "frontend"
   }
   depends_on = [azurerm_role_assignment.acr_pull, azurerm_container_app.backend]

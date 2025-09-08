@@ -56,9 +56,6 @@ This solution provides an intelligent system for generating professional Azure a
 4. Docker Desktop installed and running
 5. Git installed
 
-### You need an existing Azure AI Foundry Agents Service Project as described here:
-- ## [Azure AI Foundry Agents Service](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/overview)
-
 ### Deployment
 
 1. **Clone the repository**:
@@ -67,15 +64,7 @@ This solution provides an intelligent system for generating professional Azure a
    ```
  You will get asked to select an Environment name, Subscription and Region
 
- Once the build starts you will get asked to provide:
-
- Azure OpenAI API Key from your Azure OpenAI Agent Service
-
- Azure OpenAI Project Endpoint, in the format https://your-foundry-service.cognitiveservices.azure.com/your-foundry-project
-
- The Model Deployment name, which should be gpt-4o in most cases
-
-## Azure AI Agent Service offers 2 types of setup:
+### Azure AI Agent Service offers 2 types of setup Basic and Standard, this deploymnt uses the Basic Setup
 
 ### Basic :
  [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fazure-ai-foundry%2Ffoundry-samples%2Frefs%2Fheads%2Fmain%2Fsamples%2Fmicrosoft%2Finfrastructure-setup%2F40-basic-agent-setup%2Fbasic-setup.json)
@@ -85,15 +74,6 @@ An account and project are created.
 A GPT-4o model is deployed.
 A Microsoft-managed Key Vault is used by default.
 
-### Standard:
- [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fazure-ai-foundry%2Ffoundry-samples%2Frefs%2Fheads%2Fmain%2Fsamples%2Fmicrosoft%2Finfrastructure-setup%2F41-standard-agent-setup%2Fazuredeploy.json)
-
-Deploy a standard agent setup that uses Managed Identity for authentication.
-An account and project are created.
-A GPT-4o model is deployed.
-Azure resources for storing customer data - Azure Storage, Azure Cosmos DB, and Azure AI Search - are automatically created if existing resources are't provided.
-These resources are connected to your project to store files, threads, and vector data.
-A Microsoft-managed Key Vault is used by default.
 
 
 ### ✨  What Makes This Project Special
