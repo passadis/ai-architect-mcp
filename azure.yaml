@@ -4,6 +4,9 @@ name: ai-architect-mcp
 metadata:
   template: ai-architect-mcp@1.0.0
   description: AI-powered Azure Architecture Generator that automatically creates AI agents for design documents and diagram generation
+  author: Azure AI Architect Team
+  repositoryPath: .
+  quickstart: true
 
 infra:
   provider: terraform
