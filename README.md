@@ -82,7 +82,15 @@ https://learn.microsoft.com/en-us/azure/ai-foundry/agents/quotas-limits
    ```bash
    azd init --template passadis/ai-architect-mcp
    ```
+   and then
+   ```
+   azd up
  You will get asked to select an Environment name, Subscription and Region
+
+ ### Full non interactive:
+```bash
+ azd init --template passadis/azure-a2a-translation -e <Environment Name> --up
+   ```
 
 ### Azure AI Agent Service offers 2 types of setup Basic and Standard, this deploymnt uses the Basic Setup
 
