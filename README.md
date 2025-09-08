@@ -46,9 +46,29 @@ This solution provides an intelligent system for generating professional Azure a
 
 ## 🚀 Quick Start
 
+### Supported Regions
+- australiaeast	
+- brazilsouth	
+- canadaeast		
+- eastus	
+- eastus2	
+- francecentral	
+- germanywestcentral	
+- japaneast	
+- southcentralus
+- southeastasia	
+- southindia	
+- swedencentral	
+- switzerlandnorth
+- uksouth	
+- westus	
+- westus3	
+
+### Updates on limits and quotas: 
+https://learn.microsoft.com/en-us/azure/ai-foundry/agents/quotas-limits
+
+
 ### Prerequisites
-
-
 
 1. Azure subscription
 2. Azure CLI installed
