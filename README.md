@@ -6,17 +6,13 @@
 
 <h1 align="center">AI Architecture Diagram Generator with MCP Validation</h1>
 
-
 > **Intelligent Azure architecture diagram generator using AI agents, MCP service validation, and comprehensive Azure component library.**
-
-
 
 ## 🏗️ Architecture
 
 This solution provides an intelligent system for generating professional Azure architecture documents and diagrams with automatic validation and correction:
 
 <img width="920" height="646" alt="ArchitectAIMCP" src="https://github.com/user-attachments/assets/6174b03e-76b3-45ed-887c-0fef5ae10cdd" />
-
 
 ## ✨ Features
 
@@ -46,117 +42,52 @@ This solution provides an intelligent system for generating professional Azure a
 
 ## 🚀 Quick Start
 
-### Supported Regions
-- australiaeast	
-- brazilsouth	
-- canadaeast		
-- eastus	
-- eastus2	
-- francecentral	
-- germanywestcentral	
-- japaneast	
-- southcentralus
-- southeastasia	
-- southindia	
-- swedencentral	
-- switzerlandnorth
-- uksouth	
-- westus	
-- westus3	
-
-### Updates on limits and quotas: 
-https://learn.microsoft.com/en-us/azure/ai-foundry/agents/quotas-limits
-
-
 ### Prerequisites
 
-1. Azure subscription
-2. Azure CLI installed
-3. Azure Developer CLI (azd) installed
-4. Docker Desktop installed and running
-5. Git installed
+1. **Azure subscription** with appropriate permissions
+2. **Azure Developer CLI (azd)** installed ([Install Guide](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/install-azd))
+3. **Azure CLI** installed ([Install Guide](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli))
+4. **Docker Desktop** installed and running ([Download](https://www.docker.com/products/docker-desktop))
+5. **Git** installed ([Download](https://git-scm.com/downloads))
+
+### Supported Regions
+
+This template requires Azure AI Foundry, which is available in these regions:
+- australiaeast, brazilsouth, canadaeast, eastus, eastus2, francecentral
+- germanywestcentral, japaneast, southcentralus, southeastasia, southindia
+- swedencentral, switzerlandnorth, uksouth, westus, westus3
+
+> **Note**: Updates on limits and quotas: [Azure AI Foundry Documentation](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/quotas-limits)
 
 ### Deployment
 
-1. **Clone the repository**:
-   ```bash
-   azd init --template passadis/ai-architect-webapp
-   ```
-   and then
-   ```
-   azd up
- You will get asked to select an Environment name, Subscription and Region
-
- ### Full non interactive:
+**Option 1: Interactive Deployment (Recommended)**
 ```bash
- azd init --template passadis/ai-architect-webapp -e <Environment Name> --up
-   ```
-
-### Azure AI Agent Service offers 2 types of setup Basic and Standard, this deploymnt uses the Basic Setup
-
-### Basic :
- [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fazure-ai-foundry%2Ffoundry-samples%2Frefs%2Fheads%2Fmain%2Fsamples%2Fmicrosoft%2Finfrastructure-setup%2F40-basic-agent-setup%2Fbasic-setup.json)
-
-Deploy a basic agent setup that uses Managed Identity for authentication.
-An account and project are created.
-A GPT-4o model is deployed.
-A Microsoft-managed Key Vault is used by default.
-
-
-
-### ✨  What Makes This Project Special
-
-- **🧠 Intelligent Architecture**: Combines Azure AI automation with a clean, maintainable codebase
-
-- **📘 Model Context Protocol (MCP)**: Acts as a single source of truth for validation and service integration
-
-- **🔗 Seamless Azure Integration**: Works effortlessly with Cosmos DB, Azure Storage, and other native services
-
-- **⚙️ Scalable & Secure Backend**: Designed for high performance and enterprise-grade security
-
-- **🖥️ Intuitive Frontend**: Responsive UI for a smooth and user-friendly experience
-
-- **🧪 Clean Separation of Concerns**: Modular design for easier testing, maintenance, and innovation
-
-- **🚀 azd Template Support**: Fully compatible with Azure Developer CLI for streamlined deployment
-
-- **🏢 Enterprise Ready**: Built for real-world cloud environments with rapid iteration in mind
-
-
-## Other methods:
-
-## Prerequisites
-
-1. Azure subscription
-2. Azure CLI installed
-3. Azure Developer CLI (azd) installed
-4. Docker Desktop installed and running
-5. Git installed
-
-## 🚀 Quick Deploy with Azure Developer CLI
-
-Deploy this entire solution to Azure with just two commands:
-
-```bash
-azd auth login
+azd init --template passadis/ai-architect-webapp
 azd up
 ```
-## Remember you should have logged in with Azure CLI or switched to your target subscription:
+
+**Option 2: Non-Interactive Deployment**
 ```bash
-az login
-az account set --subscription <your-subscription-id>
+azd init --template passadis/ai-architect-webapp -e <environment-name> --up
 ```
 
-That's it! The `azd up` command will:
-- Initialize the project environment
-- Provision all Azure infrastructure using Terraform
-- Build and deploy the containerized applications
+The deployment will:
+- Create an Azure AI Foundry service with GPT-4o model
+- Deploy frontend, backend, and MCP service containers
+- Set up Cosmos DB, Storage Account, and Key Vault
 - Configure managed identity and RBAC permissions
-- Set up monitoring and logging
+- Provide the application URL when complete
 
-3. **Access the application**:
-   - The deployment will output the frontend URL
-   - Open the URL in your browser to start creating diagrams
+### Azure AI Agent Service
+
+This deployment uses the **Basic Agent Setup** which includes:
+- Azure AI Foundry service with Managed Identity authentication
+- AI project with GPT-4o model deployment  
+- Microsoft-managed Key Vault
+- All necessary RBAC permissions
+
+Alternative manual setup: [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fazure-ai-foundry%2Ffoundry-samples%2Frefs%2Fheads%2Fmain%2Fsamples%2Fmicrosoft%2Finfrastructure-setup%2F40-basic-agent-setup%2Fbasic-setup.json)
 
 ## 💡 Usage Examples - Prompts
 
@@ -177,6 +108,17 @@ Design a microservices platform with API gateway, container apps, and shared dat
 Build a data lake solution with Azure Functions for processing and Power BI for visualization
 ```
 **Generated**: Data Lake + Functions + Event Hub + Power BI with data flow connections
+
+## ✨ What Makes This Project Special
+
+- **🧠 Intelligent Architecture**: Combines Azure AI automation with a clean, maintainable codebase
+- **📘 Model Context Protocol (MCP)**: Acts as a single source of truth for validation and service integration
+- **🔗 Seamless Azure Integration**: Works effortlessly with Cosmos DB, Azure Storage, and other native services
+- **⚙️ Scalable & Secure Backend**: Designed for high performance and enterprise-grade security
+- **🖥️ Intuitive Frontend**: Responsive UI for a smooth and user-friendly experience
+- **🧪 Clean Separation of Concerns**: Modular design for easier testing, maintenance, and innovation
+- **🚀 azd Template Support**: Fully compatible with Azure Developer CLI for streamlined deployment
+- **🏢 Enterprise Ready**: Built for real-world cloud environments with rapid iteration in mind
 
 ## 🏛️ Architecture Components
 
@@ -208,7 +150,7 @@ Build a data lake solution with Azure Functions for processing and Power BI for 
 
 ### Environment Variables
 
-The application uses the following environment variables:
+The application uses the following environment variables (automatically configured during deployment):
 
 ```bash
 # Azure AI Projects
@@ -239,43 +181,55 @@ For advanced scenarios, you can customize:
 
 ## 🧪 Development
 
-### Local Development Setup
+### Cloud-Native Development (Recommended)
 
-1. **Backend Setup**:
-   ```bash
-   cd backend
-   pip install -r requirements.txt
-   uvicorn app.main:app --reload --port 8000
-   ```
+This project is designed as a **cloud-native Azure template**. For the best development experience:
 
-2. **Frontend Setup**:
-   ```bash
-   cd frontend/architect-ai
-   npm install
-   npm start
-   ```
+**Option 1: GitHub Codespaces**
+```bash
+# One-click cloud development environment
+# Click "Code" → "Create codespace on main" in GitHub
+# All dependencies and Azure CLI pre-configured
+azd auth login
+azd up
+```
 
-3. **MCP Service Setup**:
-   ```bash
-   cd mcp-service
-   pip install -r requirements.txt
-   python mcp_http_wrapper.py
-   ```
+**Option 2: Azure Deployment**
+```bash
+# Deploy your development environment to Azure
+azd init --template passadis/ai-architect-webapp
+azd up
+# Develop against live Azure services
+```
+
+**Option 3: Frontend-Only Local Development**
+```bash
+# Work on UI changes locally, use deployed Azure backend
+cd frontend/architect-ai
+npm install
+npm start
+# Configure REACT_APP_API_URL to point to your deployed Azure backend
+```
+
+### Why No Local Full-Stack Setup?
+
+This template integrates deeply with Azure services (AI Foundry, Cosmos DB, Managed Identity) that don't have local equivalents. The architecture is optimized for Azure Container Apps with Dapr service mesh.
+
+For learning and experimentation, we recommend deploying to Azure's free tier or using GitHub Codespaces.
 
 ### Testing
 
+Once deployed to Azure, you can test the services:
+
 ```bash
-# Backend tests
-cd backend
-pytest
+# Test backend API health
+curl https://your-backend-url.azurecontainerapps.io/health
 
-# Frontend tests  
-cd frontend/architect-ai
-npm test
+# Test MCP service
+curl https://your-mcp-service-url.azurecontainerapps.io/health
 
-# MCP Service tests
-cd mcp-service
-python -m pytest
+# View application logs
+azd monitor --live
 ```
 
 ## 🛠️ Troubleshooting
@@ -300,7 +254,7 @@ python -m pytest
 - **Discussions**: [GitHub Discussions](https://github.com/passadis/ai-architect-webapp/discussions)
 - **Documentation**: [Wiki](https://github.com/passadis/ai-architect-webapp/wiki)
 
-##  Contributing
+## 🤝 Contributing
 
 We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
 
@@ -312,22 +266,16 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 4. Add tests for new functionality
 5. Submit a pull request
 
-##  License
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-##  Acknowledgments
+## 🙏 Acknowledgments
 
 - **Azure Diagrams Library**: For the comprehensive Azure component library
 - **Model Context Protocol**: For the validation framework
 - **Azure Developer CLI**: For the deployment infrastructure
 - **Community Contributors**: For feedback and improvements
-
-## 🔗 Related Projects
-
-- [Azure A2A Translation](https://github.com/passadis/azure-a2a-translation) - Agent-to-Agent translation service
-- [Azure Container Apps Samples](https://github.com/Azure-Samples/container-apps-store-api-microservice)
-- [Azure AI Projects Samples](https://github.com/Azure-Samples/azure-ai-projects-samples)
 
 ---
 
