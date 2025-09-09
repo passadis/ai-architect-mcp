@@ -700,8 +700,8 @@ resource "azurerm_container_app" "frontend" {
     container {
       name   = "frontend"
       image  = "mcr.microsoft.com/azuredocs/containerapps-helloworld:latest"
-      cpu    = 0.25
-      memory = "0.5Gi"
+      cpu    = 0.5
+      memory = "1Gi"
 
       env {
         name  = "NODE_ENV"
