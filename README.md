@@ -181,43 +181,55 @@ For advanced scenarios, you can customize:
 
 ## 🧪 Development
 
-### Local Development Setup
+### Cloud-Native Development (Recommended)
 
-1. **Backend Setup**:
-   ```bash
-   cd backend
-   pip install -r requirements.txt
-   uvicorn app.main:app --reload --port 8000
-   ```
+This project is designed as a **cloud-native Azure template**. For the best development experience:
 
-2. **Frontend Setup**:
-   ```bash
-   cd frontend/architect-ai
-   npm install
-   npm start
-   ```
+**Option 1: GitHub Codespaces**
+```bash
+# One-click cloud development environment
+# Click "Code" → "Create codespace on main" in GitHub
+# All dependencies and Azure CLI pre-configured
+azd auth login
+azd up
+```
 
-3. **MCP Service Setup**:
-   ```bash
-   cd mcp-service
-   pip install -r requirements.txt
-   python mcp_http_wrapper.py
-   ```
+**Option 2: Azure Deployment**
+```bash
+# Deploy your development environment to Azure
+azd init --template passadis/ai-architect-webapp
+azd up
+# Develop against live Azure services
+```
+
+**Option 3: Frontend-Only Local Development**
+```bash
+# Work on UI changes locally, use deployed Azure backend
+cd frontend/architect-ai
+npm install
+npm start
+# Configure REACT_APP_API_URL to point to your deployed Azure backend
+```
+
+### Why No Local Full-Stack Setup?
+
+This template integrates deeply with Azure services (AI Foundry, Cosmos DB, Managed Identity) that don't have local equivalents. The architecture is optimized for Azure Container Apps with Dapr service mesh.
+
+For learning and experimentation, we recommend deploying to Azure's free tier or using GitHub Codespaces.
 
 ### Testing
 
+Once deployed to Azure, you can test the services:
+
 ```bash
-# Backend tests
-cd backend
-pytest
+# Test backend API health
+curl https://your-backend-url.azurecontainerapps.io/health
 
-# Frontend tests  
-cd frontend/architect-ai
-npm test
+# Test MCP service
+curl https://your-mcp-service-url.azurecontainerapps.io/health
 
-# MCP Service tests
-cd mcp-service
-python -m pytest
+# View application logs
+azd monitor --live
 ```
 
 ## 🛠️ Troubleshooting
@@ -265,5 +277,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Azure Developer CLI**: For the deployment infrastructure
 - **Community Contributors**: For feedback and improvements
 
+---
 
 **Made with ❤️ by [Konstantinos Passadis](https://github.com/passadis)**
