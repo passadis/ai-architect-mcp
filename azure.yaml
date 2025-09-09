@@ -12,10 +12,10 @@ infra:
   provider: terraform
 
 services:
-  frontend:
-    project: ./frontend/architect-ai
+  mcp-service:
+    project: ./mcp-service
     host: containerapp
-    language: js
+    language: python
     docker:
       path: Dockerfile
   backend:
@@ -24,10 +24,10 @@ services:
     language: python
     docker:
       path: Dockerfile
-  mcp-service:
-    project: ./mcp-service
+  frontend:
+    project: ./frontend/architect-ai
     host: containerapp
-    language: python
+    language: js
     docker:
       path: Dockerfile
 
