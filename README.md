@@ -222,15 +222,6 @@ azd up
 # Develop against live Azure services
 ```
 
-**Option 3: Frontend-Only Local Development**
-```bash
-# Work on UI changes locally, use deployed Azure backend
-cd frontend/architect-ai
-npm install
-npm start
-# Configure REACT_APP_API_URL to point to your deployed Azure backend
-```
-
 ### Why No Local Full-Stack Setup?
 
 This template integrates deeply with Azure services (AI Foundry, Cosmos DB, Managed Identity) that don't have local equivalents. The architecture is optimized for Azure Container Apps with Dapr service mesh.
