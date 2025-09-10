@@ -69,6 +69,7 @@ This template requires Azure AI Foundry, which is available in these regions:
 3. **Deploy to Azure** with just two commands:
    ```bash
    azd auth login
+   az login
    azd up
    ```
 
@@ -84,12 +85,15 @@ az account set --subscription <your-subscription-id>
 **Option 2: Interactive Deployment (Recommended)**
 ```bash
 azd init --template passadis/ai-architect-webapp
+az login
 azd up
 ```
 
 **Option 3: Non-Interactive Deployment**
 ```bash
+az login
 azd init --template passadis/ai-architect-webapp -e <environment-name> --up
+azd up
 ```
 
 The deployment will:
@@ -211,12 +215,15 @@ This project is designed as a **cloud-native Azure template**. For the best deve
 # Click "Code" → "Create codespace on main" in GitHub
 # All dependencies and Azure CLI pre-configured
 azd auth login
+az login
 azd up
 ```
 
 **Option 2: Azure Deployment**
 ```bash
 # Deploy your development environment to Azure
+azd auth login
+az login or az account set --subscription <your-subscription-id>
 azd init --template passadis/ai-architect-webapp
 azd up
 # Develop against live Azure services
