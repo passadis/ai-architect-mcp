@@ -237,20 +237,7 @@ This template integrates deeply with Azure services (AI Foundry, Cosmos DB, Mana
 
 For learning and experimentation, we recommend deploying to Azure's free tier or using GitHub Codespaces.
 
-### Testing
 
-Once deployed to Azure, you can test the services:
-
-```bash
-# Test backend API health
-curl https://your-backend-url.azurecontainerapps.io/health
-
-# Test MCP service
-curl https://your-mcp-service-url.azurecontainerapps.io/health
-
-# View application logs
-azd monitor --live
-```
 
 ## 🛠️ Troubleshooting
 
