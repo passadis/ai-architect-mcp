@@ -75,8 +75,8 @@ This template requires Azure AI Foundry, which is available in these regions:
 
 No need to install anything locally - everything runs in the cloud! Perfect for developers who want to try the template quickly or work from any device.
 
-```
-## Remember you should have logged in with Azure CLI or switched to your target subscription:
+### Remember you should have logged in with Azure CLI or switched to your target subscription:
+
 ```bash
 az login
 az account set --subscription <your-subscription-id>
